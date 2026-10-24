@@ -1,13 +1,15 @@
 # Mundaca's Solutions — Landing corporativa
 
-Landing corporativa de producción construida con Next.js App Router, TypeScript, Framer Motion, Lucide React, Resend y almacenamiento opcional de leads en Supabase.
+Sitio corporativo construido con Next.js 16 (App Router, componentes de servidor por defecto), TypeScript estricto, CSS Modules + tokens, Resend y almacenamiento opcional de leads en Supabase. Sigue el estándar web premium de la agencia: ver `docs/ART_DIRECTION_GUIDE.md` (marca, paleta, tipografía, composición) y `docs/MACROFASE_ESTANDAR.md` (estado de la remodelación).
 
 ## Incluye
 
-- Hero de alto impacto y navegación responsive.
-- Servicios, proyectos, método, stack y presentación corporativa.
-- Animaciones con soporte para `prefers-reduced-motion`.
-- SEO completo: metadata, Open Graph, Twitter Card, sitemap y robots.
+- Hero oscuro con onda, ticker, productos propios, caso Cafetal, principio, IA en capas, problemas, soluciones, método, socio tecnológico y contacto.
+- Páginas por datos (`src/content`): `/productos/[slug]` y `/soluciones/[slug]` con `generateStaticParams`.
+- Fuentes autoalojadas (Fraunces + Figtree vía `@fontsource-variable/*` y `next/font/local`).
+- Animaciones propias (`app/template.tsx`, `Reveal`, ticker) con soporte para `prefers-reduced-motion`; sin framer-motion.
+- Pruebas: Vitest (unitarias), Playwright en escritorio y móvil, axe WCAG A/AA.
+- SEO completo: metadata, Open Graph, Twitter Card, sitemap, robots y JSON-LD (Organization, WebSite, ProfessionalService, SoftwareApplication, BreadcrumbList).
 - PWA manifest, favicon y Apple Touch Icon.
 - Formulario con validación compartida, honeypot, consentimiento, control de origen, límite de payload y rate limit básico.
 - Correos interno y de confirmación mediante Resend.
@@ -144,20 +146,29 @@ No crear una política pública de inserción. La escritura se realiza desde `/a
 
 ```text
 src/
-├─ app/
-│  ├─ api/contact/route.ts
-│  ├─ api/health/route.ts
-│  ├─ privacidad/page.tsx
-│  ├─ terminos/page.tsx
-│  ├─ robots.ts
-│  ├─ sitemap.ts
-│  ├─ error.tsx
-│  ├─ not-found.tsx
-│  ├─ globals.css
-│  ├─ layout.tsx
-│  └─ page.tsx
+├─ app/                 rutas (home, productos/[slug], soluciones/[slug], contacto, legales, api/contact)
+│  ├─ template.tsx      entrada de página (animación en cada navegación)
+│  └─ error / loading / not-found / global-error
 ├─ components/
-│  ├─ ContactForm.tsx
-│  └─ PageTransition.tsx
-└─ lib/contact-options.ts
+│  ├─ layout/           Header (menú Soluciones por clic), Footer, WhatsAppFab, HashScroll
+│  ├─ ui/               iconos propios, botones, contenedores
+│  ├─ motion/           Reveal
+│  ├─ sections/         secciones de la home y de las páginas internas
+│  ├─ contact/          formulario (usa el mismo schema que la API)
+│  ├─ seo/              JSON-LD y migas de pan
+│  └─ legal/
+├─ content/             todo el texto, tipado (site, home, products, solutions, legal)
+├─ lib/                 contact-schema, contact-options, seo, fonts
+└─ styles/              tokens · brand · motion · a11y
+e2e/  tests/unit/       Playwright (+ axe) y Vitest
+docs/                   guía de arte, estado de la macrofase, crédito MadeBy, SEO
 ```
+
+## Pruebas
+
+```bash
+npm test            # Vitest
+npm run build && npm run test:e2e   # Playwright escritorio + móvil + axe (puerto 3200, API simulada)
+```
+
+Tras cada `build`, reinicia tu servidor (`npm start`) o verás CSS viejo.

@@ -1,19 +1,15 @@
+import styles from "@/components/sections/pages.module.css";
+
+/** Route loading state: a quiet pulse that keeps header and footer in place. */
 export default function Loading() {
   return (
-    <main className="page-loader" aria-label="Cargando Mundaca's Solutions">
-      <div className="loader-brand">
-        <div className="loader-mark" aria-hidden="true">
-          <span>M</span>
-        </div>
-        <div>
-          <strong>Mundaca&apos;s</strong>
-          <small>Solutions</small>
-        </div>
-      </div>
-      <div className="loader-track">
+    <div className={styles.status} role="status" aria-live="polite">
+      <span className={styles.loadingDots} aria-hidden="true">
         <span />
-      </div>
-      <p>Preparando una experiencia construida con precisión.</p>
-    </main>
+        <span />
+        <span />
+      </span>
+      <p>Cargando…</p>
+    </div>
   );
 }

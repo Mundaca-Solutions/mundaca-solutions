@@ -1,0 +1,417 @@
+/* ---------- Header (dark, sticky) ---------- */
+.header {
+  position: sticky;
+  top: 0;
+  z-index: var(--z-sticky);
+  isolation: isolate;
+  border-bottom: 1px solid rgb(255 255 255 / 0.09);
+  color: var(--ms-on-dark);
+}
+
+/* The blur lives on a pseudo-element: backdrop-filter on the header itself would become the
+   containing block of the position:fixed mobile sheet and trap it. */
+.header::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: color-mix(in srgb, var(--ms-navy) 92%, transparent);
+  backdrop-filter: saturate(1.3) blur(14px);
+}
+
+.headerInner {
+  /* stays above the full-screen mobile sheet so logo + close button remain usable */
+  position: relative;
+  z-index: calc(var(--z-overlay) + 1);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-5);
+  width: 100%;
+  max-width: var(--container-max);
+  min-height: 4.5rem;
+  margin-inline: auto;
+  padding: var(--space-2) var(--gutter);
+}
+
+.logo {
+  display: inline-flex;
+  flex: none;
+}
+
+.logo img {
+  width: auto;
+  height: 2.5rem;
+}
+
+.nav {
+  display: none;
+}
+
+.navList {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.navLink {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  padding: var(--space-2) 0;
+  border: 0;
+  background: none;
+  font: inherit;
+  font-size: var(--text-sm);
+  font-weight: 600;
+  color: var(--ms-on-dark-soft);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--motion-fast);
+}
+
+.navLink::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 2px;
+  border-radius: 2px;
+  background: var(--ms-brass);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform var(--motion-normal);
+}
+
+.navLink:hover,
+.navLinkActive {
+  color: #fff;
+}
+
+.navLink:hover::after,
+.navLinkActive::after {
+  transform: scaleX(1);
+}
+
+.navMenu {
+  position: relative;
+}
+
+.chevron {
+  transition: transform var(--motion-normal);
+}
+
+.chevronOpen {
+  transform: rotate(180deg);
+}
+
+.dropdown {
+  position: absolute;
+  top: calc(100% + 0.9rem);
+  left: -1rem;
+  z-index: var(--z-overlay);
+  display: grid;
+  gap: 0.2rem;
+  width: 22rem;
+  margin: 0;
+  padding: 0.5rem;
+  list-style: none;
+  border-radius: 1.1rem;
+  background: #fff;
+  color: var(--ms-ink);
+  box-shadow: var(--shadow-panel);
+  animation: dropdown-in 170ms var(--ease-emphasized) both;
+}
+
+@keyframes dropdown-in {
+  from {
+    opacity: 0;
+    transform: translateY(-6px);
+  }
+}
+
+.dropdownLink {
+  display: grid;
+  gap: 0.15rem;
+  padding: 0.8rem 1rem;
+  border-radius: 0.8rem;
+  text-decoration: none;
+  transition: background-color var(--motion-fast);
+}
+
+.dropdownLink:hover,
+.dropdownLink[aria-current="page"] {
+  background: var(--ms-paper);
+}
+
+.dropdownLink strong {
+  font-size: var(--text-sm);
+  color: var(--ms-navy);
+}
+
+.dropdownLink span {
+  font-size: var(--text-xs);
+  color: var(--ms-ink-soft);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.cta {
+  display: none;
+}
+
+.menuButton {
+  display: inline-grid;
+  place-items: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 999px;
+  border: 1px solid rgb(255 255 255 / 0.3);
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+  transition: background-color var(--motion-fast);
+}
+
+.menuButton:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+
+/* ---------- Mobile sheet ---------- */
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: var(--z-overlay);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-6);
+  padding: 5.75rem var(--gutter) var(--space-7);
+  overflow-y: auto;
+  background: linear-gradient(180deg, var(--ms-navy), var(--ms-navy-2));
+  color: var(--ms-on-dark);
+}
+
+.sheetList {
+  display: grid;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.sheetLink,
+.sheetGroup {
+  display: block;
+  padding: 0.85rem 0;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+  font-family: var(--font-display);
+  font-size: 1.9rem;
+  letter-spacing: -0.02em;
+  color: #fff;
+  text-decoration: none;
+}
+
+.sheetGroup {
+  border-bottom: 0;
+  padding-bottom: 0.3rem;
+}
+
+.sheetLink[aria-current="page"] {
+  color: var(--ms-brass);
+  font-style: italic;
+}
+
+.sheetSub {
+  display: grid;
+  margin: 0 0 var(--space-2);
+  padding: 0 0 var(--space-3);
+  list-style: none;
+  border-bottom: 1px solid rgb(255 255 255 / 0.1);
+}
+
+.sheetSubLink {
+  display: block;
+  padding: 0.5rem 0 0.5rem 1rem;
+  border-left: 2px solid var(--ms-brass);
+  margin-block: 0.15rem;
+  font-size: var(--text-lg);
+  font-weight: 600;
+  color: var(--ms-on-dark-soft);
+  text-decoration: none;
+}
+
+.sheetSubLink:hover {
+  color: #fff;
+}
+
+.sheetActions {
+  display: grid;
+  gap: var(--space-3);
+}
+
+@media (min-width: 40rem) {
+  .cta {
+    display: inline-flex;
+  }
+}
+
+@media (min-width: 62rem) {
+  .nav {
+    display: block;
+  }
+
+  .menuButton,
+  .sheet {
+    display: none;
+  }
+
+  .logo img {
+    height: 2.7rem;
+  }
+}
+
+/* ---------- WhatsApp FAB ---------- */
+.fab {
+  position: fixed;
+  right: var(--space-4);
+  bottom: var(--space-4);
+  z-index: var(--z-raised);
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.95rem;
+  border-radius: 999px;
+  background: var(--ms-whatsapp);
+  color: #fff;
+  font-weight: 700;
+  font-size: var(--text-sm);
+  text-decoration: none;
+  box-shadow: 0 10px 30px oklch(0.4 0.1 150 / 0.35);
+  transition: transform var(--motion-normal);
+}
+
+.fab:hover {
+  transform: translateY(-2px);
+}
+
+.fabLabel {
+  display: none;
+}
+
+@media (min-width: 62rem) {
+  .fab {
+    padding: 0.9rem 1.3rem 0.9rem 1rem;
+  }
+
+  .fabLabel {
+    display: inline;
+  }
+}
+
+/* ---------- Footer (dark) ---------- */
+.footer {
+  border-top: 1px solid rgb(255 255 255 / 0.1);
+  background: linear-gradient(180deg, var(--ms-navy-2), var(--ms-navy));
+  color: var(--ms-on-dark-soft);
+  padding-top: var(--space-9);
+  font-size: var(--text-sm);
+}
+
+.footerGrid {
+  display: grid;
+  gap: var(--space-7);
+  grid-template-columns: 1fr;
+}
+
+.footerBrand {
+  display: grid;
+  gap: var(--space-4);
+  align-content: start;
+  max-width: 26rem;
+}
+
+.footerLogo {
+  display: inline-flex;
+  width: fit-content;
+}
+
+.footerLogo img {
+  width: auto;
+  height: 3rem;
+}
+
+.footerBrand p {
+  line-height: var(--leading-relaxed);
+}
+
+.footerTitle {
+  margin-bottom: var(--space-4);
+  font-family: var(--font-body);
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--ms-brass);
+}
+
+.footerList {
+  display: grid;
+  gap: var(--space-3);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.footer a {
+  color: var(--ms-on-dark-soft);
+  text-decoration: none;
+  transition: color var(--motion-fast);
+}
+
+.footer a:hover {
+  color: #fff;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.footerBottom {
+  display: grid;
+  gap: var(--space-3);
+  margin-top: var(--space-8);
+  /* extra bottom room so the floating WhatsApp button never covers the legal line */
+  padding-block: var(--space-6) 6rem;
+  border-top: 1px solid rgb(255 255 255 / 0.14);
+  font-size: var(--text-xs);
+}
+
+.footerBottom p {
+  margin: 0;
+}
+
+.footerLegal {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2) var(--space-5);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+@media (min-width: 52rem) {
+  .footerGrid {
+    grid-template-columns: 1.5fr 1fr 1fr 1fr;
+  }
+
+  .footerBottom {
+    grid-template-columns: 1fr auto;
+    align-items: center;
+  }
+}

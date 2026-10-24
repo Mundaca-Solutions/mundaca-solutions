@@ -1,9 +1,51 @@
-import Link from "next/link";
 import type { Metadata } from "next";
-import { Breadcrumbs, PageHeader, siteUrl } from "../seo-content";
+import { Reveal } from "@/components/motion/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { LinkButton } from "@/components/ui/LinkButton";
+import { Container } from "@/components/ui/primitives";
+import { products, productsIndex } from "@/content/products";
+import { pageMetadata } from "@/lib/seo";
+import styles from "@/components/sections/pages.module.css";
 
-export const metadata: Metadata = { title: "Productos de software", description: "Foodies y Carbono Zero: productos de software de Mundaca's Solutions para conectar operaciones, datos e inteligencia.", alternates: { canonical: `${siteUrl}/productos` } };
+export const metadata: Metadata = pageMetadata({
+  title: productsIndex.metaTitle,
+  description: productsIndex.metaDescription,
+  path: "/productos",
+});
 
 export default function ProductsPage() {
-  return <main className="seo-page"><div className="seo-shell"><Breadcrumbs current="Productos" section="Inicio" sectionHref="/" /><PageHeader eyebrow="PRODUCTOS PROPIOS" title="Software construido para operaciones reales" description="Mundaca's Solutions crea productos tecnológicos que convierten operaciones complejas en sistemas más claros, trazables y preparados para decidir." /><div className="seo-grid"><article className="seo-card"><div className="seo-eyebrow">OPERACIÓN COMERCIAL</div><h2>Foodies</h2><p>Software de gestión operacional para negocios que venden. Conecta ventas, caja, inventario, pedidos y datos para que el equipo trabaje con una fuente de verdad común.</p><p><strong>Para quién:</strong> restaurantes, cafeterías, minimarkets y negocios con operación de venta.</p><Link href="/productos/foodies">Conocer Foodies dentro del portfolio</Link><br /><a className="seo-cta" href="https://foodies.mundacasolutions.com">Visitar Foodies</a></article><article className="seo-card"><div className="seo-eyebrow">INTELIGENCIA AMBIENTAL</div><h2>Carbono Zero</h2><p>Plataforma de inteligencia ambiental para proyectos de construcción. Ordena materiales, evidencia, indicadores y trazabilidad para comprender el desempeño del proyecto.</p><p><strong>Para quién:</strong> equipos de construcción, sostenibilidad, diseño y gestión de proyectos.</p><Link href="/productos/carbono-zero">Conocer Carbono Zero dentro del portfolio</Link><br /><a className="seo-cta" href="https://carbonozero.mundacasolutions.com">Visitar Carbono Zero</a></article></div></div></main>;
+  return (
+    <>
+      <PageHero
+        crumbs={[{ label: "Inicio", href: "/" }, { label: "Productos" }]}
+        eyebrow={productsIndex.eyebrow}
+        title={productsIndex.h1}
+        lead={productsIndex.lead}
+      />
+      <div className={styles.page}>
+        <Container>
+          <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
+            {products.map((product) => (
+              <li key={product.slug} className={styles.card}>
+                <span className={styles.cardEyebrow}>{product.indexCard.eyebrow}</span>
+                <h2>{product.name}</h2>
+                <p>{product.indexCard.text}</p>
+                <p className={styles.forWho}>
+                  <strong>Para quién:</strong> {product.indexCard.forWho}
+                </p>
+                <div className={styles.cardActions}>
+                  <LinkButton href={`/productos/${product.slug}`} variant="secondary" icon="arrowRight">
+                    {product.indexCard.hubLabel}
+                  </LinkButton>
+                  <LinkButton href={product.externalUrl} icon="external">
+                    {product.indexCard.visitLabel}
+                  </LinkButton>
+                </div>
+              </li>
+            ))}
+          </Reveal>
+        </Container>
+      </div>
+    </>
+  );
 }

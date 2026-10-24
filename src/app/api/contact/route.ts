@@ -1,7 +1,7 @@
 import { after, NextResponse } from "next/server";
 import { Resend } from "resend";
 import { z } from "zod";
-import { contactServices, contactTimelines } from "@/lib/contact-options";
+import { contactSchema, type ContactInput } from "@/lib/contact-schema";
 
 export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
@@ -10,18 +10,6 @@ const MAX_BODY_BYTES = 20_000;
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 5;
 const rateLimitStore = new Map<string, { count: number; resetAt: number }>();
-
-const contactSchema = z.object({
-  name: z.string().trim().min(2, "Ingresa tu nombre").max(100),
-  company: z.string().trim().min(2, "Ingresa el nombre de tu empresa").max(120),
-  email: z.string().trim().toLowerCase().email("Ingresa un correo válido").max(160),
-  phone: z.string().trim().max(40).optional().default(""),
-  service: z.enum(contactServices),
-  timeline: z.enum(contactTimelines),
-  message: z.string().trim().min(12, "Cuéntanos un poco más sobre el desafío").max(3000),
-  consent: z.literal(true, { error: "Debes aceptar la Política de Privacidad" }),
-  website: z.string().trim().max(200).optional().default(""),
-}).strict();
 
 function escapeHtml(value: string) {
   return value
@@ -233,7 +221,7 @@ function customerTemplate(data: { name: string; company: string; service: string
   `);
 }
 
-async function storeLead(data: z.infer<typeof contactSchema>) {
+async function storeLead(data: ContactInput) {
   const url = process.env.SUPABASE_URL;
   const serviceRoleKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
   const configuredTable = process.env.SUPABASE_LEADS_TABLE || "landing_leads";

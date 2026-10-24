@@ -1,0 +1,147 @@
+/**
+ * Design tokens: two layers.
+ * 1. Primitive tokens (raw scales) — never referenced directly by components.
+ * 2. Semantic tokens (role-based) — what components and styles/brand.css use.
+ * A new site overrides semantic tokens (or the brand hue) in styles/brand.css;
+ * it never edits this file or hardcodes values in components.
+ */
+
+:root {
+  /* ---------- Primitive: color ---------- */
+  --gray-0: #ffffff;
+  --gray-50: #f7f7f8;
+  --gray-100: #eeeef0;
+  --gray-200: #d9d9de;
+  --gray-300: #b8b9c1;
+  --gray-400: #8f909c;
+  --gray-500: #6b6c78;
+  --gray-600: #4f5058;
+  --gray-700: #3a3b41;
+  --gray-800: #232429;
+  --gray-900: #131418;
+  --gray-950: #0a0a0c;
+
+  --brand-hue: 250;
+  --brand-50: oklch(0.97 0.02 var(--brand-hue));
+  --brand-100: oklch(0.93 0.045 var(--brand-hue));
+  --brand-300: oklch(0.8 0.09 var(--brand-hue));
+  --brand-500: oklch(0.58 0.16 var(--brand-hue));
+  --brand-600: oklch(0.5 0.17 var(--brand-hue));
+  --brand-700: oklch(0.42 0.16 var(--brand-hue));
+
+  --red-500: oklch(0.58 0.21 25);
+  --amber-500: oklch(0.75 0.16 80);
+  --green-500: oklch(0.62 0.15 145);
+
+  /* ---------- Primitive: type ---------- */
+  --font-family-display: var(--brand-font-display, ui-serif, Georgia, serif);
+  --font-family-body: var(--brand-font-body, ui-sans-serif, system-ui, sans-serif);
+  --font-family-mono: ui-monospace, "SF Mono", Menlo, monospace;
+
+  --text-2xs: 0.75rem;
+  --text-xs: 0.8125rem;
+  --text-sm: 0.9375rem;
+  --text-md: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.375rem;
+  --text-2xl: 1.75rem;
+  --text-3xl: 2.25rem;
+  --text-4xl: 2.875rem;
+  --text-5xl: 3.5rem;
+  --text-6xl: 4.5rem;
+
+  --leading-tight: 1.1;
+  --leading-snug: 1.3;
+  --leading-normal: 1.55;
+  --leading-relaxed: 1.75;
+
+  --tracking-tight: -0.02em;
+  --tracking-normal: 0;
+  --tracking-wide: 0.06em;
+
+  /* ---------- Primitive: space (4px base) ---------- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: 4rem;
+  --space-9: 6rem;
+  --space-10: 8rem;
+  --space-11: 12rem;
+
+  /* ---------- Primitive: radius ---------- */
+  --radius-none: 0;
+  --radius-sm: 0.25rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.875rem;
+  --radius-xl: 1.5rem;
+  --radius-full: 9999px;
+
+  /* ---------- Primitive: shadow ---------- */
+  --shadow-sm: 0 1px 2px oklch(0 0 0 / 0.06);
+  --shadow-md: 0 4px 12px oklch(0 0 0 / 0.08);
+  --shadow-lg: 0 12px 32px oklch(0 0 0 / 0.12);
+  --shadow-xl: 0 24px 64px oklch(0 0 0 / 0.16);
+
+  /* ---------- Primitive: z-index ---------- */
+  --z-base: 0;
+  --z-raised: 10;
+  --z-sticky: 20;
+  --z-overlay: 30;
+  --z-modal: 40;
+  --z-toast: 50;
+  --z-skip-link: 100;
+
+  /* ---------- Primitive: motion ---------- */
+  --duration-fast: 120ms;
+  --duration-normal: 220ms;
+  --duration-slow: 400ms;
+  --ease-standard: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-emphasized: cubic-bezier(0.2, 0, 0, 1);
+
+  /* ================= Semantic tokens ================= */
+  --color-bg: var(--gray-0);
+  --color-bg-subtle: var(--gray-50);
+  --color-surface: var(--gray-0);
+  --color-surface-raised: var(--gray-0);
+  --color-border: var(--gray-200);
+  --color-border-strong: var(--gray-300);
+
+  --color-fg: var(--gray-900);
+  --color-fg-muted: var(--gray-600);
+  --color-fg-subtle: var(--gray-500);
+  --color-fg-on-brand: var(--gray-0);
+
+  --color-accent: var(--brand-600);
+  --color-accent-strong: var(--brand-700);
+  --color-accent-subtle: var(--brand-50);
+
+  --color-focus-ring: var(--brand-500);
+  --color-danger: var(--red-500);
+  --color-warning: var(--amber-500);
+  --color-success: var(--green-500);
+
+  --font-display: var(--font-family-display);
+  --font-body: var(--font-family-body);
+  --font-mono: var(--font-family-mono);
+
+  --radius-control: var(--radius-md);
+  --radius-surface: var(--radius-lg);
+
+  --shadow-control: var(--shadow-sm);
+  --shadow-panel: var(--shadow-lg);
+  --shadow-card: var(--shadow-md);
+  --shadow-card-hover: var(--shadow-xl);
+
+  --motion-fast: var(--duration-fast) var(--ease-standard);
+  --motion-normal: var(--duration-normal) var(--ease-standard);
+  --motion-slow: var(--duration-slow) var(--ease-emphasized);
+
+  --container-max: 78rem;
+  --gutter: var(--space-5);
+  --section-space: clamp(4rem, 8vw, 7rem);
+}

@@ -1,0 +1,84 @@
+/**
+ * Motion system. Nothing here animates anything by default — components opt
+ * in per-element via the .reveal utility, the ticker or the page entrance.
+ * Everything respects prefers-reduced-motion unconditionally.
+ */
+
+.reveal {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 700ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal[data-variant="scale"] {
+  transform: scale(0.96);
+}
+
+.reveal[data-visible="true"] {
+  opacity: 1;
+  transform: none;
+}
+
+/* Lists/grids: each direct child enters in turn. After it settles, children keep only their own styles. */
+.reveal-stagger:not([data-settled]) > * {
+  opacity: 0;
+  transform: translateY(1.25rem);
+  transition:
+    opacity 650ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 650ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.reveal-stagger[data-visible="true"]:not([data-settled]) > * {
+  opacity: 1;
+  transform: none;
+}
+
+.reveal-stagger:not([data-settled]) > :nth-child(1) { transition-delay: 0ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(2) { transition-delay: 90ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(3) { transition-delay: 180ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(4) { transition-delay: 270ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(5) { transition-delay: 360ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(6) { transition-delay: 450ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(7) { transition-delay: 540ms; }
+.reveal-stagger:not([data-settled]) > :nth-child(n + 8) { transition-delay: 630ms; }
+
+/* Page entrance: app/template.tsx re-mounts on every navigation, so this plays on each route change. */
+.page-enter {
+  animation: page-enter 480ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes page-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+}
+
+/* Without JavaScript nothing would ever reveal, so show everything. */
+@media (scripting: none) {
+  .reveal,
+  .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .reveal,
+  .reveal-stagger > * {
+    opacity: 1 !important;
+    transform: none !important;
+    transition: none !important;
+  }
+
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

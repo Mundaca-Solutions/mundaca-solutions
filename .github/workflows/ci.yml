@@ -21,11 +21,18 @@ jobs:
         with:
           node-version: 22
 
+      # package-lock.json is committed: `npm ci` builds exactly the audited dependency tree.
       - name: Install dependencies
-        run: npm install --no-audit --no-fund
+        run: npm ci --no-fund
+
+      - name: Audit production dependencies
+        run: npm audit --audit-level=high --omit=dev
 
       - name: Lint and typecheck
         run: npm run lint && npm run typecheck
+
+      - name: Unit tests
+        run: npm test
 
       - name: Production build
         run: npm run build
@@ -33,3 +40,12 @@ jobs:
           NEXT_PUBLIC_SITE_URL: https://mundacasolutions.com
           NEXT_PUBLIC_WHATSAPP_URL: https://wa.me/56966635509
           NEXT_PUBLIC_CONTACT_EMAIL: cristobal.mundacav@gmail.com
+
+      - name: Install browser for e2e
+        run: npx playwright install --with-deps chromium
+
+      # The contact API is mocked in every test: no email is ever sent.
+      - name: e2e (desktop, mobile, axe WCAG A/AA)
+        run: npm run test:e2e
+        env:
+          NEXT_PUBLIC_SITE_URL: https://mundacasolutions.com

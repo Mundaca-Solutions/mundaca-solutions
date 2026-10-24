@@ -1,0 +1,70 @@
+/**
+ * Brand pack — Mundaca's Solutions. Overrides semantic tokens from tokens.css;
+ * never redefines primitives or reaches into component CSS modules.
+ * Decisions are recorded in docs/ART_DIRECTION_GUIDE.md.
+ *
+ * Palette "Azul noche y latón": a deep night blue as the dominant color and a
+ * single warm accent (brass). Accent TEXT on light backgrounds uses --ms-brass-ink.
+ */
+
+:root {
+  --brand-hue: 255;
+
+  /* Wired in lib/fonts.ts via next/font/local. */
+  --brand-font-display: var(--font-fraunces), "Iowan Old Style", Georgia, serif;
+  --brand-font-body: var(--font-figtree), ui-sans-serif, system-ui, sans-serif;
+
+  --ms-navy: #071425;
+  --ms-navy-2: #0c2038;
+  --ms-navy-3: #14304f;
+  --ms-brass: #e6b450;
+  --ms-brass-strong: #f0c46a;
+  --ms-brass-soft: #fbf0d6;
+  /* Brass text on LIGHT backgrounds: #e6b450 alone is under 3:1 there. */
+  --ms-brass-ink: #8a5a00;
+  --ms-paper: #f7f4ee;
+  --ms-paper-deep: #efe9dc;
+  --ms-line: #ddd5c4;
+  --ms-line-strong: #c9bfa8;
+  --ms-ink: #0b1b30;
+  --ms-ink-soft: #44566b;
+  --ms-on-dark: #f4f1ea;
+  --ms-on-dark-soft: #b9c6d8;
+  --ms-red: #c81f3a;
+  --ms-green: #137a4b;
+  /* White text on this green must stay ≥ 4.5:1 (WCAG AA). */
+  --ms-whatsapp: #0f7a3b;
+
+  --color-bg: var(--ms-paper);
+  --color-bg-subtle: var(--ms-paper-deep);
+  --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-border: var(--ms-line);
+  --color-border-strong: var(--ms-line-strong);
+
+  --color-fg: var(--ms-ink);
+  --color-fg-muted: var(--ms-ink-soft);
+  --color-fg-subtle: #566a80;
+  --color-fg-on-brand: var(--ms-navy);
+
+  --color-accent: var(--ms-brass-ink);
+  --color-accent-strong: var(--ms-navy);
+  --color-accent-subtle: var(--ms-brass-soft);
+  --color-focus-ring: #1b60c4;
+  --color-danger: var(--ms-red);
+  --color-success: var(--ms-green);
+
+  --radius-control: 999px;
+  --radius-surface: 1.5rem;
+
+  --shadow-card: 0 1px 2px oklch(0.25 0.04 255 / 0.06), 0 10px 30px oklch(0.25 0.04 255 / 0.08);
+  --shadow-card-hover: 0 2px 4px oklch(0.25 0.04 255 / 0.08), 0 22px 48px oklch(0.25 0.04 255 / 0.16);
+  --shadow-panel: 0 18px 48px oklch(0.25 0.06 255 / 0.2);
+
+  --container-max: 78rem;
+  --gutter: clamp(1.25rem, 4vw, 2.5rem);
+
+  --section-space: clamp(4.5rem, 9vw, 8rem);
+
+  --motion-normal: var(--duration-normal) var(--ease-emphasized);
+}

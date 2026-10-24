@@ -1,49 +1,35 @@
 import type { Metadata, Viewport } from "next";
-import { Inter, Manrope } from "next/font/google";
-import { PageTransition } from "@/components/PageTransition";
+import type { ReactNode } from "react";
+import { Footer } from "@/components/layout/Footer";
+import { HashScroll } from "@/components/layout/HashScroll";
+import { Header } from "@/components/layout/Header";
+import { WhatsAppFab } from "@/components/layout/WhatsAppFab";
+import { JsonLd } from "@/components/seo/JsonLd";
+import { site, siteUrl } from "@/content/site";
+import { body, display } from "@/lib/fonts";
+import { defaultDescription, graph, ogImage, organizationSchema, websiteSchema } from "@/lib/seo";
 import "./globals.css";
-import "./landing-saas.css";
-import "./landing-saas-2.css";
-import "./landing-saas-3.css";
-import "./landing-saas-4.css";
-import "./landing-saas-5.css";
-import "./landing-saas-6.css";
-import "./seo-pages.css";
-
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-body",
-  display: "swap",
-});
-
-const manrope = Manrope({
-  subsets: ["latin"],
-  variable: "--font-display",
-  display: "swap",
-});
-
-const configuredUrl = process.env.NEXT_PUBLIC_SITE_URL || "https://mundacasolutions.com";
-const siteUrl = configuredUrl.startsWith("http") ? configuredUrl : `https://${configuredUrl}`;
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   themeColor: "#071425",
-  colorScheme: "dark light",
+  colorScheme: "light",
 };
+
+const defaultTitle = "Mundaca's Solutions | Software, datos e inteligencia operacional";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Mundaca's Solutions | Software, datos e inteligencia operacional",
+    default: defaultTitle,
     template: "%s | Mundaca's Solutions",
   },
-  description:
-    "Mundaca's Solutions diseña productos y software a medida que conectan operación, datos e inteligencia para automatizar procesos, aumentar el control y mejorar decisiones.",
-  applicationName: "Mundaca's Solutions",
-  authors: [{ name: "Mundaca's Solutions SpA" }],
-  creator: "Mundaca's Solutions SpA",
-  publisher: "Mundaca's Solutions SpA",
+  description: defaultDescription,
+  applicationName: site.name,
+  authors: [{ name: site.legalName }],
+  creator: site.legalName,
+  publisher: site.legalName,
   category: "technology",
   keywords: [
     "desarrollo de software Chile",
@@ -57,27 +43,19 @@ export const metadata: Metadata = {
   ],
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Mundaca's Solutions | Software, datos e inteligencia operacional",
-    description:
-      "Mundaca's Solutions diseña productos y software a medida que conectan operación, datos e inteligencia para automatizar procesos, aumentar el control y mejorar decisiones.",
+    title: defaultTitle,
+    description: defaultDescription,
     url: siteUrl,
-    siteName: "Mundaca's Solutions",
-    locale: "es_CL",
+    siteName: site.name,
+    locale: site.locale,
     type: "website",
-    images: [
-      {
-        url: "/og-image.png",
-        width: 1200,
-        height: 630,
-        alt: "Mundaca's Solutions — Software, datos e inteligencia operacional",
-      },
-    ],
+    images: [ogImage],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Mundaca's Solutions",
-    description: "Mundaca's Solutions diseña productos y software a medida que conectan operación, datos e inteligencia para automatizar procesos, aumentar el control y mejorar decisiones.",
-    images: ["/og-image.png"],
+    title: site.name,
+    description: defaultDescription,
+    images: [ogImage.url],
   },
   robots: {
     index: true,
@@ -100,33 +78,20 @@ export const metadata: Metadata = {
   manifest: "/site.webmanifest",
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const entitySchema = {
-    "@context": "https://schema.org",
-    "@graph": [
-      {
-        "@type": "Organization",
-        "@id": `${siteUrl}/#organization`,
-        name: "Mundaca's Solutions SpA",
-        url: siteUrl,
-        logo: `${siteUrl}/logos/mundaca-solutions/logo-mundaca-solutions.png`,
-        description: "Empresa de software y productos tecnológicos para operaciones reales.",
-      },
-      {
-        "@type": "WebSite",
-        "@id": `${siteUrl}/#website`,
-        url: siteUrl,
-        name: "Mundaca's Solutions",
-        publisher: { "@id": `${siteUrl}/#organization` },
-      },
-    ],
-  };
-
+export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="es" className={`${inter.variable} ${manrope.variable}`}>
+    <html lang="es-CL" data-theme="light" className={`${display.variable} ${body.variable}`}>
       <body>
-        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(entitySchema) }} />
-        <PageTransition>{children}</PageTransition>
+        {/* One Organization + WebSite graph for the whole site; pages add their own nodes. */}
+        <JsonLd data={graph(organizationSchema(), websiteSchema())} />
+        <a className="skip-link" href="#contenido">
+          Saltar al contenido principal
+        </a>
+        <Header />
+        <main id="contenido">{children}</main>
+        <Footer />
+        <WhatsAppFab />
+        <HashScroll />
       </body>
     </html>
   );

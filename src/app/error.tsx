@@ -1,16 +1,27 @@
 "use client";
 
-import { RotateCcw } from "lucide-react";
+import { site } from "@/content/site";
+import { Icon } from "@/components/ui/icons";
+import styles from "@/components/sections/pages.module.css";
 
-export default function ErrorPage({ reset }: { reset: () => void }) {
+/** Friendly error state (replaces the page content, keeps header/footer). Plain Spanish, one next step. */
+export default function ErrorPage({ reset }: { error: Error & { digest?: string }; reset: () => void }) {
   return (
-    <main className="status-page">
-      <span>500</span>
+    <div className={styles.status} role="alert">
+      <span className={styles.statusIcon}>
+        <Icon name="alert" size={30} />
+      </span>
+      <span className={styles.statusCode}>Error</span>
       <h1>Algo no salió como esperábamos.</h1>
-      <p>La experiencia está protegida para fallar de forma segura. Puedes reintentar ahora.</p>
-      <button className="button button-primary" type="button" onClick={reset}>
-        <RotateCcw size={18} /> Reintentar
-      </button>
-    </main>
+      <p>Ya estamos al tanto. Puedes volver a intentarlo ahora; si sigue igual, escríbenos por WhatsApp.</p>
+      <div className={styles.statusActions}>
+        <button type="button" className={styles.statusPrimary} onClick={reset}>
+          <Icon name="rotate" size={18} /> Reintentar
+        </button>
+        <a className={styles.statusSecondary} href={site.whatsappUrl} target="_blank" rel="noopener noreferrer">
+          <Icon name="whatsapp" size={18} /> WhatsApp
+        </a>
+      </div>
+    </div>
   );
 }

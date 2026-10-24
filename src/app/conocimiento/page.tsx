@@ -1,5 +1,45 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Breadcrumbs, PageHeader, siteUrl } from "../seo-content";
-export const metadata: Metadata = { title: "Conocimiento sobre software y operaciones", description: "Notas de Mundaca's Solutions sobre software, datos, automatización e inteligencia operacional.", alternates: { canonical: `${siteUrl}/conocimiento` } };
-export default function Page() { return <main className="seo-page"><div className="seo-shell"><Breadcrumbs current="Conocimiento" section="Inicio" sectionHref="/" /><PageHeader eyebrow="CONOCIMIENTO" title="Ideas para conectar mejor la operación con los datos" description="Un espacio para compartir cómo pensamos productos, automatización e inteligencia aplicada a problemas concretos." /><div className="seo-grid"><article className="seo-card"><h2>Productos propios</h2><p>Conoce cómo Foodies y Carbono Zero convierten problemas específicos en productos de software.</p><Link href="/productos">Explorar productos</Link></article><article className="seo-card"><h2>Soluciones a medida</h2><p>Revisa nuestro enfoque para entender, diseñar, implementar y acompañar sistemas operacionales.</p><Link href="/soluciones/software-a-medida">Ver soluciones</Link></article></div></div></main>; }
+import { Reveal } from "@/components/motion/Reveal";
+import { PageHero } from "@/components/sections/PageHero";
+import { Icon } from "@/components/ui/icons";
+import { Container } from "@/components/ui/primitives";
+import { conocimiento } from "@/content/home";
+import { pageMetadata } from "@/lib/seo";
+import styles from "@/components/sections/pages.module.css";
+
+export const metadata: Metadata = pageMetadata({
+  title: conocimiento.metaTitle,
+  description: conocimiento.metaDescription,
+  path: "/conocimiento",
+});
+
+export default function KnowledgePage() {
+  return (
+    <>
+      <PageHero
+        crumbs={[{ label: "Inicio", href: "/" }, { label: "Conocimiento" }]}
+        eyebrow={conocimiento.eyebrow}
+        title={conocimiento.h1}
+        lead={conocimiento.lead}
+      />
+      <div className={styles.page}>
+        <Container>
+          <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
+            {conocimiento.cards.map((card) => (
+              <li key={card.title} className={styles.card}>
+                <h2>{card.title}</h2>
+                <p>{card.text}</p>
+                <div className={styles.cardActions}>
+                  <Link className={styles.textLink} href={card.href}>
+                    {card.linkLabel} <Icon name="arrowRight" size={16} />
+                  </Link>
+                </div>
+              </li>
+            ))}
+          </Reveal>
+        </Container>
+      </div>
+    </>
+  );
+}
