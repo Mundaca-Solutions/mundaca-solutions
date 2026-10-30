@@ -22,13 +22,8 @@ test("the three solution pages are reachable from the home and answer 200", asyn
   }
 });
 
-test("anchors work from inner pages: Caso Cafetal and Cómo trabajamos return to the home section", async ({ page }, info) => {
+test("anchors work from inner pages: Cómo trabajamos returns to the home section", async ({ page }, info) => {
   test.skip(!isDesktop(info), "header nav is desktop; the footer covers mobile");
-  await page.goto("/contacto");
-  await page.locator("header nav").getByRole("link", { name: "Caso Cafetal" }).click();
-  await expect(page).toHaveURL(/\/#cafetal$/);
-  await expect(page.locator("#cafetal")).toBeInViewport();
-
   await page.goto("/conocimiento");
   await page.locator("header nav").getByRole("link", { name: "Cómo trabajamos" }).click();
   await expect(page).toHaveURL(/\/#metodo$/);
@@ -81,7 +76,6 @@ test("product pages link out to their subdomain and back to the index", async ({
     "href",
     "https://foodies.mundacasolutions.com",
   );
-  await expect(page.getByRole("link", { name: "Ver el caso Cafetal" })).toHaveAttribute("href", "/#cafetal");
   await page.getByRole("link", { name: "Volver a productos" }).click();
   await expect(page).toHaveURL(/\/productos$/);
 });

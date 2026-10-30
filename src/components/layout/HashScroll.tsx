@@ -7,7 +7,7 @@ const POLL_MS = 80;
 const MAX_WAIT_MS = 6000;
 
 /**
- * Makes links like /#cafetal reliable when they come from another page. Next scrolls to the hash when
+ * Makes links like /#metodo reliable when they come from another page. Next scrolls to the hash when
  * the navigation commits, but if the route's loading state commits first the target section does not
  * exist yet and the page stays at the top. This waits (briefly) for the element and scrolls to it.
  * It never fights the user: it stops at the first manual scroll, wheel or key press.

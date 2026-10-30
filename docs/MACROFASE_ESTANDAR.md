@@ -26,11 +26,11 @@ Sin commit ni push en ninguna fase hasta que el dueño lo pida.
 - [x] Home servida desde el servidor (antes: un solo `"use client"` de 684 líneas). Cliente solo en Header, Reveal, WhatsAppFab, HashScroll y formulario.
 - [x] Sin framer-motion ni lucide-react; iconos propios; entrada de página con `app/template.tsx` (sin blur).
 - [x] `src/content/*.ts` tipado; `/productos/[slug]` y `/soluciones/[slug]` por datos con `generateStaticParams` (`dynamicParams = false`).
-- [x] Orden de la home según la misión: hero con onda → ticker → productos → Cafetal → principio 4+4 → IA en capas → problemas → soluciones (oscuro) → método → socio → contacto → footer. (Resultados entra en la Fase 7.)
+- [x] Orden de la home según la misión: hero → franja de valor → productos → Foodies en acción → principio con íconos → IA habilitadora → problemas → soluciones (oscuro) → método → socio → contacto → footer. (Resultados entra en la Fase 7.)
 - [x] Header con menú "Soluciones" que abre por CLIC (Escape, clic fuera, foco), cajón móvil; botón flotante WhatsApp `#0f7a3b`, oculto en `/contacto`.
 - [x] Las tres soluciones enlazadas desde la home, el menú y el footer.
 - [x] Bug JSON-LD: el logo de Organization apuntaba a `logo-mundaca-solutions.png`; ahora usa un archivo que existe (y hay prueba que lo verifica). Se usa la versión a color (`logo-mundacas-solutions-color.png`) porque el logo blanco no se ve sobre el fondo claro de los buscadores.
-- [x] Anclas: `bookingUrl` por defecto `/#contacto`; `/#cafetal` y `/#metodo`. Además `HashScroll`: Next no scrolleaba a la ancla cuando la pantalla de carga se montaba antes que la sección (bug real reproducido bajo carga).
+- [x] Anclas: `bookingUrl` por defecto `/#contacto`; `/#metodo`. Además `HashScroll`: Next no scrolleaba a la ancla cuando la pantalla de carga se montaba antes que la sección (bug real reproducido bajo carga).
 - [x] SEO: se conservaron URLs, title/description/canonical, H1, sitemap de 11 rutas, robots con `Disallow: /api/`, JSON-LD y hubs `/productos/*`; se agregó BreadcrumbList; Open Graph por página.
 - [x] Corregido: las descripciones de `/productos/foodies` y `/productos/carbono-zero` salían con `&apos;` literal; la miga de pan de `/productos` decía "Inicio / Inicio / Productos".
 - [x] Extraído el schema zod a `src/lib/contact-schema.ts`; la API (`route.ts`) quedó con su lógica intacta (rate limit, honeypot, origen, Resend).

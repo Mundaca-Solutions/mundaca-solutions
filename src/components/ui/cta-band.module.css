@@ -1,0 +1,53 @@
+.band {
+  display: grid;
+  gap: var(--space-5);
+  align-items: center;
+  padding: clamp(1.5rem, 3.4vw, 2.4rem) clamp(1.5rem, 3.6vw, 2.8rem);
+  border: 1px solid rgb(255 255 255 / 0.1);
+  border-radius: var(--radius-surface);
+  color: var(--ms-on-dark);
+  background:
+    radial-gradient(30rem 16rem at 100% 0%, rgb(230 180 80 / 0.16), transparent 70%),
+    linear-gradient(135deg, var(--ms-navy) 0%, var(--ms-navy-3) 100%);
+}
+
+.copy {
+  display: grid;
+  gap: 0.4rem;
+  max-width: 44rem;
+}
+
+.copy small {
+  font-size: var(--text-xs);
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--ms-brass);
+}
+
+.copy strong {
+  font-family: var(--font-display);
+  font-size: clamp(1.35rem, 2.6vw, 1.85rem);
+  font-weight: 420;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  text-wrap: balance;
+  color: #fff;
+}
+
+@media (min-width: 52rem) {
+  .band {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: var(--space-7);
+  }
+}
+
+[data-product] .band {
+  background:
+    radial-gradient(30rem 16rem at 100% 0%, color-mix(in srgb, var(--product) 30%, transparent), transparent 70%),
+    linear-gradient(135deg, var(--product-deep) 0%, var(--product-deep-2) 100%);
+}
+
+[data-product] .copy small {
+  color: var(--product-light);
+}

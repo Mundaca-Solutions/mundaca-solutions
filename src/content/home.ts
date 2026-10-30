@@ -1,7 +1,10 @@
 import type { SolutionSlug } from "./solutions";
 import type { IconName } from "./types";
 
-/** Contenido de la home. Cada frase existía ya en el sitio anterior; aquí solo se reordena y se tipa. */
+/**
+ * Contenido de la home. Los textos existían ya en el sitio; aquí se reordenan, se tipan y se ajustan para la
+ * refinación (sin inventar clientes, cifras, funcionalidades ni resultados).
+ */
 
 export const hero = {
   eyebrow: "SOFTWARE · DATOS · INTELIGENCIA OPERACIONAL",
@@ -11,11 +14,6 @@ export const hero = {
   lead: "Diseñamos productos y software a medida que conectan procesos, datos e inteligencia. Menos fricción operativa, más control y mejores decisiones.",
   primaryCta: "Conversemos sobre tu operación",
   secondaryCta: "Explorar nuestros productos",
-  trust: [
-    { icon: "searchCheck", label: "Diagnóstico antes de cotizar" },
-    { icon: "boxes", label: "Desarrollo por etapas" },
-    { icon: "message", label: "Acompañamiento directo" },
-  ] satisfies { icon: IconName; label: string }[],
   panel: {
     label: "Productos propios",
     intro: "Una misma forma de construir software",
@@ -23,18 +21,24 @@ export const hero = {
   },
 } as const;
 
-/** Ticker: only messages that already existed on the site. */
-export const tickerMessages = [
-  "Diagnóstico antes de cotizar",
-  "Desarrollo por etapas",
-  "Acompañamiento directo",
-  "Alcance claro",
-  "Avances visibles",
-  "Comunicación directa",
-  "Menos fricción operativa",
-  "Más control",
-  "Mejores decisiones",
-] as const;
+/** Franja bajo el hero: tres propuestas de valor concretas (sustituye al ticker). */
+export const valueProps: readonly { icon: IconName; title: string; text: string }[] = [
+  {
+    icon: "searchCheck",
+    title: "Diagnóstico antes de cotizar",
+    text: "Revisamos el contexto, la prioridad y la viabilidad antes de hablar de precio.",
+  },
+  {
+    icon: "boxes",
+    title: "Desarrollo por etapas",
+    text: "Alcance claro y avances visibles: sabes qué se construye y qué sigue.",
+  },
+  {
+    icon: "message",
+    title: "Acompañamiento directo",
+    text: "Comunicación directa desde la primera conversación hasta la puesta en marcha.",
+  },
+];
 
 export const productsSection = {
   eyebrow: "PRODUCTOS PROPIOS",
@@ -42,45 +46,54 @@ export const productsSection = {
   text: "Carbono Zero y Foodies nacen de la misma forma de entender el software: conectar la operación, ordenar los datos y convertirlos en contexto útil para decidir. Aplicamos ese principio a problemas distintos, sin perder profundidad en cada industria.",
 } as const;
 
-export const cafetal = {
-  eyebrow: "CASO REAL · CAFETAL",
+/** Demostración verificable de Foodies (producto propio). Los módulos y sus textos salen de content/products.ts. */
+export const foodiesDemo = {
+  eyebrow: "FOODIES EN ACCIÓN",
   title: "Una operación completa, conectada de principio a fin.",
-  text: "Foodies se configuró alrededor del flujo real de Cafetal para reunir clientes, pedidos, preparación, despacho, cuentas, pagos, caja e información de gestión en una sola operación trazable.",
-  tag: "IMPLEMENTACIÓN ESPECIALIZADA",
-  product: "Construido sobre Foodies",
-  stages: [
-    { index: "01", title: "Solicitud", items: ["Cliente", "Pedido", "Menú"] },
-    { index: "02", title: "Ejecución", items: ["Preparación", "Despacho"] },
-    { index: "03", title: "Cierre y control", items: ["Pago / Cuenta", "Caja", "Reportes"] },
-  ],
-  impact: "Una sola operación trazable desde la solicitud hasta el cierre.",
-  ctaLabel: "Conocer Foodies",
+  text: "Cada venta alimenta el control del negocio: el equipo ejecuta pedidos y cobros, mientras quienes administran revisan inventario, cierres y tendencias sin depender de planillas aisladas.",
+  forLabel: "Configurable para",
+  forItems: ["Restaurantes", "Cafeterías", "Minimarkets"],
 } as const;
 
 export const principle = {
   eyebrow: "NUESTRO PRINCIPIO",
   title: "No empezamos por la tecnología. Empezamos por el problema.",
-  /** Eight steps → a 4 + 4 grid. */
-  steps: ["Problema", "Operación", "Datos", "Contexto", "Inteligencia", "Decisión", "Acción", "Resultado"],
+  /** Eight steps → a 4 + 4 grid, joined by arrows. */
+  steps: [
+    { icon: "alert", title: "Problema" },
+    { icon: "workflow", title: "Operación" },
+    { icon: "database", title: "Datos" },
+    { icon: "link", title: "Contexto" },
+    { icon: "sparkles", title: "Inteligencia" },
+    { icon: "compass", title: "Decisión" },
+    { icon: "zap", title: "Acción" },
+    { icon: "flag", title: "Resultado" },
+  ] satisfies { icon: IconName; title: string }[],
   note: "Es el principio detrás de cada producto y cada solución que construimos: comprender primero, estructurar después y usar tecnología sólo donde realmente mejora la operación.",
 } as const;
 
 export const aiLayers = {
   eyebrow: "INTELIGENCIA ARTIFICIAL",
-  title: "La inteligencia aporta cuando entiende el contexto.",
-  text: "Primero estructuramos procesos, datos y reglas. Después usamos inteligencia artificial para explicar, relacionar y asistir decisiones sobre una realidad que el sistema ya comprende.",
-  layers: [
-    { index: "Capa 1", title: "Procesos", note: "Primero se estructuran" },
-    { index: "Capa 2", title: "Datos", note: "Primero se estructuran" },
-    { index: "Capa 3", title: "Reglas", note: "Primero se estructuran" },
-    { index: "Capa 4", title: "Inteligencia artificial", note: "Después explica, relaciona y asiste decisiones" },
-  ],
+  title: "No vendemos inteligencia artificial. Resolvemos problemas operacionales.",
+  text: "Primero estructuramos procesos, información y contexto, para que la operación se entienda y las decisiones lleguen a tiempo. La inteligencia artificial es la tecnología que lo habilita: explica, relaciona y asiste decisiones sobre una realidad que el sistema ya comprende.",
+  chain: [
+    { icon: "workflow", title: "Procesos", text: "Primero se estructuran" },
+    { icon: "database", title: "Información", text: "Datos conectados y ordenados" },
+    { icon: "link", title: "Contexto", text: "Reglas y relaciones que dan sentido" },
+    { icon: "compass", title: "Decisiones", text: "Visibilidad para actuar a tiempo" },
+  ] satisfies { icon: IconName; title: string; text: string }[],
+  enabler: {
+    label: "Tecnología habilitadora",
+    title: "Inteligencia artificial",
+    text: "Después explica, relaciona y asiste decisiones sobre una realidad que el sistema ya comprende.",
+  },
 } as const;
 
 export const problemsSection = {
   eyebrow: "CUANDO LA OPERACIÓN CRECE",
   title: "La complejidad no debería convertirse en descontrol.",
   text: "Cuando la información queda repartida entre personas, planillas, mensajes y herramientas que no conversan, aumenta la fricción operativa y disminuye la capacidad de ver qué está ocurriendo.",
+  outcome: { title: "Una operación conectada", text: "Procesos, datos y decisiones en un mismo lugar." },
   cta: { kicker: "¿Te suena familiar?", title: "Cuéntanos dónde se está generando la fricción.", label: "Revisar mi caso" },
 } as const;
 
@@ -119,7 +132,7 @@ export const solutionsSection = {
   },
 } as const;
 
-/** Cada tarjeta enlaza a la página de solución que la desarrolla. */
+/** Cada ítem enlaza a la página de solución que lo desarrolla. */
 export const solutionCards: readonly {
   icon: IconName;
   title: string;
@@ -208,11 +221,11 @@ export const partner = {
     kicker: "DE PROBLEMA A RESULTADO",
     title: "Un camino claro para avanzar",
     flow: [
-      { icon: "searchCheck", label: "Entender" },
-      { icon: "target", label: "Priorizar" },
-      { icon: "boxes", label: "Construir" },
-      { icon: "rocket", label: "Resultado" },
-    ] satisfies { icon: IconName; label: string }[],
+      { icon: "searchCheck", title: "Entender" },
+      { icon: "target", title: "Priorizar" },
+      { icon: "boxes", title: "Construir" },
+      { icon: "rocket", title: "Resultado" },
+    ] satisfies { icon: IconName; title: string }[],
     resultKicker: "RESULTADO",
     resultTitle: "Una operación más clara y preparada para crecer.",
     resultChips: ["Menos fricción", "Más control", "Mejor información"],
@@ -224,6 +237,7 @@ export const contactSection = {
   title: "Cuéntanos qué está frenando tu operación.",
   text: "Antes de hablar de tecnología o precio, revisamos el contexto, la prioridad y la viabilidad. Así la primera conversación empieza donde realmente importa.",
   points: ["Diagnóstico enfocado en tu operación", "Viabilidad y alcance honestos", "Un próximo paso concreto"],
+  /** Only shown when the booking link goes to an outside calendar (see ContactChannels). */
   bookingLabel: "Agendar conversación",
   whatsapp: { kicker: "¿Prefieres escribirnos?", title: "Conversemos directamente por WhatsApp." },
   formHead: { index: "01", title: "Cuéntanos qué necesitas resolver", note: "Respuesta personal" },

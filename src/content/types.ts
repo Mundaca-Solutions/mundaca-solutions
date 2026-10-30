@@ -2,6 +2,7 @@
 export type IconName =
   | "arrowRight"
   | "arrowLeft"
+  | "arrowDown"
   | "chevronRight"
   | "chevronDown"
   | "menu"
@@ -25,10 +26,25 @@ export type IconName =
   | "external"
   | "mail"
   | "rotate"
-  | "whatsapp";
+  | "whatsapp"
+  | "database"
+  | "cart"
+  | "receipt"
+  | "users"
+  | "plug"
+  | "compass"
+  | "flag"
+  | "file"
+  | "gauge"
+  | "link"
+  | "leaf"
+  | "clipboard";
 
 export type NavChild = { label: string; href: string; description: string };
 
 export type NavItem = { label: string; href: string; children?: NavChild[] };
 
 export type Link = { label: string; href: string; external?: boolean };
+
+/** One node of a connected diagram (see components/ui/Flow.tsx). */
+export type FlowStepData = { icon: IconName; title: string; text?: string; meta?: string };

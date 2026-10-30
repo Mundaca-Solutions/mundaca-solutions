@@ -3,7 +3,7 @@ import { Container } from "@/components/ui/primitives";
 import type { Crumb } from "@/lib/seo";
 import styles from "./pages.module.css";
 
-/** Dark band that opens every inner page: breadcrumbs, eyebrow, the page's single H1 and a lead. */
+/** Compact dark band that opens every inner page: breadcrumbs, eyebrow, the page's single H1 and a lead. */
 export function PageHero({
   crumbs,
   eyebrow,

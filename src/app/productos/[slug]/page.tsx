@@ -5,13 +5,13 @@ import { notFound } from "next/navigation";
 import { Reveal } from "@/components/motion/Reveal";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { PageHero } from "@/components/sections/PageHero";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { Icon } from "@/components/ui/icons";
-import { LinkButton } from "@/components/ui/LinkButton";
-import { Container } from "@/components/ui/primitives";
+import { ProductBoard } from "@/components/ui/ProductBoard";
+import { Container, Section } from "@/components/ui/primitives";
 import { productBySlug, products } from "@/content/products";
 import { graph, pageMetadata, softwareApplicationSchema } from "@/lib/seo";
-import homeStyles from "@/components/sections/sections.module.css";
-import styles from "@/components/sections/pages.module.css";
+import styles from "@/components/sections/inner.module.css";
 
 type Params = { slug: string };
 
@@ -33,13 +33,21 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   });
 }
 
+/**
+ * Product page: identity strip, the product's own diagram (what it connects), what it helps order and who it is for,
+ * and one closing action. Each product keeps its own accent color (Foodies orange, Carbono Zero green).
+ */
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const product = productBySlug(slug);
   if (!product) notFound();
 
+  const [overview, closing] = product.hub.sections;
+  const capabilities = overview?.cards?.find((card) => card.list);
+  const audience = overview?.cards?.find((card) => card.text);
+
   return (
-    <>
+    <div data-product={product.tone}>
       <JsonLd data={graph(softwareApplicationSchema(product))} />
       <PageHero
         crumbs={[
@@ -52,22 +60,22 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         lead={product.hub.lead}
       />
 
-      <div className={styles.page}>
+      <Section tone="white" labelledBy="producto-flujo" className={styles.pageSection}>
         <Container>
-          <Reveal className={styles.productStrip}>
-            <div className={homeStyles.logoWell}>
+          <Reveal className={styles.identity}>
+            <div className={styles.logoStage}>
               <Image
                 src={product.logo.src}
                 alt={`Logo de ${product.name}`}
                 width={product.logo.width}
                 height={product.logo.height}
-                sizes="180px"
+                sizes="(max-width: 48rem) 70vw, 260px"
               />
             </div>
-            <div className={styles.productStripCopy}>
+            <div className={styles.identityCopy}>
               <small>{product.category}</small>
               <strong>{product.impact}</strong>
-              <ul className={homeStyles.tags}>
+              <ul className={styles.chips}>
                 {product.tags.map((tag) => (
                   <li key={tag}>{tag}</li>
                 ))}
@@ -75,52 +83,62 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             </div>
           </Reveal>
 
-          {product.hub.sections.map((section) => (
-            <section key={section.title}>
-              <div className={styles.block}>
-                <h2>{section.title}</h2>
-                <p>{section.text}</p>
-              </div>
+          {overview ? (
+            <Reveal className={styles.intro}>
+              <h2 id="producto-flujo">{overview.title}</h2>
+              <p>{overview.text}</p>
+            </Reveal>
+          ) : null}
 
-              {section.cards ? (
-                <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
-                  {section.cards.map((card) => (
-                    <li key={card.title} className={styles.card}>
-                      <h3>{card.title}</h3>
-                      {card.list ? (
-                        <ul className={styles.list}>
-                          {card.list.map((item) => (
-                            <li key={item}>
-                              <Icon name="check" size={17} /> {item}
-                            </li>
-                          ))}
-                        </ul>
-                      ) : null}
-                      {card.text ? <p>{card.text}</p> : null}
-                    </li>
-                  ))}
+          <ProductBoard product={product} intro={product.flow.intro} />
+        </Container>
+      </Section>
+
+      {capabilities || audience ? (
+        <Section tone="paper" labelledBy="producto-capacidades" className={styles.pageSection}>
+          <Container>
+            <div className={styles.caps}>
+              {capabilities ? (
+                <Reveal className={styles.capList}>
+                  <h2 id="producto-capacidades">{capabilities.title}</h2>
+                  <ul>
+                    {capabilities.list?.map((item) => (
+                      <li key={item}>
+                        <Icon name="checkCircle" size={20} /> {item}
+                      </li>
+                    ))}
+                  </ul>
                 </Reveal>
               ) : null}
-
-              {section.cta ? (
-                <div className={`${styles.block} ${styles.ctaRow}`}>
-                  <LinkButton href={product.externalUrl} size="lg" icon="external">
-                    {section.cta.label}
-                  </LinkButton>
-                  {product.slug === "foodies" ? (
-                    <Link className={styles.textLink} href="/#cafetal">
-                      Ver el caso Cafetal <Icon name="arrowRight" size={16} />
-                    </Link>
-                  ) : null}
-                  <Link className={styles.textLink} href="/productos">
-                    <Icon name="arrowLeft" size={16} /> Volver a productos
-                  </Link>
-                </div>
+              {audience ? (
+                <Reveal className={styles.capNote} delay={80}>
+                  <h2>{audience.title}</h2>
+                  <p>{audience.text}</p>
+                </Reveal>
               ) : null}
-            </section>
-          ))}
-        </Container>
-      </div>
-    </>
+            </div>
+          </Container>
+        </Section>
+      ) : null}
+
+      {closing?.cta ? (
+        <Section tone="white" className={styles.ctaSection}>
+          <Container>
+            <CtaBand
+              kicker={closing.title}
+              title={closing.text}
+              href={product.externalUrl}
+              label={closing.cta.label}
+              icon="external"
+            />
+            <p className={styles.backRow}>
+              <Link href="/productos">
+                <Icon name="arrowLeft" size={16} /> Volver a productos
+              </Link>
+            </p>
+          </Container>
+        </Section>
+      ) : null}
+    </div>
   );
 }

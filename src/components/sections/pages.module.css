@@ -3,33 +3,21 @@
   position: relative;
   isolation: isolate;
   overflow: hidden;
-  padding-block: clamp(1.75rem, 3vw, 2.5rem) clamp(5rem, 9vw, 7.5rem);
+  padding-block: clamp(1.25rem, 2.5vw, 1.75rem) clamp(2.25rem, 4.5vw, 3.5rem);
   color: var(--ms-on-dark);
   background:
-    radial-gradient(40rem 26rem at 88% 0%, rgb(230 180 80 / 0.13), transparent 70%),
-    linear-gradient(160deg, var(--ms-navy) 0%, var(--ms-navy-2) 60%, var(--ms-navy-3) 130%);
-}
-
-.hero::after {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  left: 0;
-  right: 0;
-  bottom: -1px;
-  height: clamp(2rem, 5vw, 4rem);
-  background: var(--color-bg);
-  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 80' preserveAspectRatio='none'%3E%3Cpath d='M0 46C240 84 470 6 720 34s520 40 720-12v58H0z'/%3E%3C/svg%3E") bottom / 100% 100% no-repeat;
+    radial-gradient(40rem 22rem at 90% 45%, rgb(230 180 80 / 0.12), transparent 70%),
+    linear-gradient(180deg, var(--ms-navy) 0%, var(--ms-navy-2) 100%);
 }
 
 .heroBody {
   position: relative;
   z-index: 1;
   display: grid;
-  gap: var(--space-4);
+  gap: var(--space-3);
   justify-items: start;
-  max-width: 50rem;
-  margin-top: clamp(2rem, 5vw, 3.5rem);
+  max-width: 48rem;
+  margin-top: clamp(1rem, 2.5vw, 1.75rem);
 }
 
 .heroEyebrow {
@@ -52,7 +40,7 @@
 }
 
 .heroBody h1 {
-  font-size: clamp(2.2rem, 5vw, 3.9rem);
+  font-size: clamp(2rem, 4.2vw, 3.1rem);
   font-weight: 380;
   line-height: 1.04;
   letter-spacing: -0.03em;
@@ -457,4 +445,24 @@
   font-size: var(--text-lg);
   line-height: var(--leading-relaxed);
   color: var(--color-fg-muted);
+}
+
+/* Product pages wear the product's own colors (the page sets data-product on a wrapper). */
+[data-product] .hero {
+  background:
+    radial-gradient(40rem 22rem at 90% 45%, color-mix(in srgb, var(--product) 30%, transparent), transparent 70%),
+    linear-gradient(180deg, var(--product-deep) 0%, var(--product-deep-2) 100%);
+}
+
+[data-product] .heroEyebrow {
+  color: var(--product-light);
+}
+
+/* Narrow phones: grid children may shrink below their content, and a long email breaks instead of overflowing. */
+.contactPanel > * {
+  min-width: 0;
+}
+
+.contactCard a {
+  overflow-wrap: anywhere;
 }

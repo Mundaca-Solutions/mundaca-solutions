@@ -36,7 +36,6 @@ export const site = {
 export const navItems: NavItem[] = [
   { label: "Productos", href: "/productos" },
   { label: "Soluciones", href: "/soluciones/software-a-medida", children: solutionNav },
-  { label: "Caso Cafetal", href: "/#cafetal" },
   { label: "Cómo trabajamos", href: "/#metodo" },
   { label: "Contacto", href: "/contacto" },
 ];

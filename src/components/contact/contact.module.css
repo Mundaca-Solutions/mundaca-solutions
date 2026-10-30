@@ -1,11 +1,11 @@
 .form {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
 }
 
 .grid {
   display: grid;
-  gap: var(--space-5);
+  gap: var(--space-4);
   grid-template-columns: 1fr;
 }
 
@@ -45,7 +45,7 @@
 }
 
 .field textarea {
-  min-height: 9rem;
+  min-height: 6.5rem;
   resize: vertical;
 }
 

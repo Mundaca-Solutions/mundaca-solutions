@@ -62,7 +62,7 @@ textarea {
   font: inherit;
 }
 
-/* Anchors (/#cafetal, /#metodo…) stop below the sticky header. */
+/* Anchors (/#foodies, /#metodo…) stop below the sticky header. */
 [id] {
   scroll-margin-top: 5.5rem;
 }

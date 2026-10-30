@@ -33,12 +33,12 @@ test("page entrance: a client navigation plays the template animation again", as
   expect(name).toContain("page-enter");
 });
 
-test("/#cafetal from another page lands on the section with animations on", async ({ page }, info) => {
+test("/#metodo from another page lands on the section with animations on", async ({ page }, info) => {
   test.skip(!isDesktop(info), "header nav is desktop");
   await page.goto("/contacto");
-  await page.locator("header nav").getByRole("link", { name: "Caso Cafetal" }).click();
-  await expect(page).toHaveURL(/\/#cafetal$/);
-  await expect(page.locator("#cafetal")).toBeInViewport({ timeout: 8000 });
+  await page.locator("header nav").getByRole("link", { name: "Cómo trabajamos" }).click();
+  await expect(page).toHaveURL(/\/#metodo$/);
+  await expect(page.locator("#metodo")).toBeInViewport({ timeout: 8000 });
 });
 
 test("a malformed hash does not crash the page", async ({ page }) => {

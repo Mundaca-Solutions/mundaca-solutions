@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { hero } from "@/content/home";
 import { products } from "@/content/products";
 import { site } from "@/content/site";
@@ -7,7 +8,10 @@ import { LinkButton } from "@/components/ui/LinkButton";
 import { Container } from "@/components/ui/primitives";
 import styles from "./sections.module.css";
 
-/** Dark hero with a wave into the page and the "productos propios" panel. The only H1 of the home. */
+/**
+ * Dark hero: copy on the left, the "productos propios" panel on the right. It is the only H1 of the home. The
+ * header above is the same solid navy, so there is no seam between the two.
+ */
 export function Hero() {
   return (
     <section className={styles.hero} aria-labelledby="hero-title" data-surface="dark" id="inicio">
@@ -23,55 +27,51 @@ export function Hero() {
             </h1>
             <p className={styles.heroLead}>{hero.lead}</p>
             <div className={styles.heroActions}>
-              <LinkButton href={site.bookingUrl} size="lg" icon="arrowRight">
+              <LinkButton href={site.bookingUrl} icon="arrowRight">
                 {hero.primaryCta}
               </LinkButton>
-              <LinkButton href="/#productos" variant="ghostDark" size="lg" icon="chevronRight">
+              <LinkButton href="/#productos" variant="ghostDark" icon="chevronRight">
                 {hero.secondaryCta}
               </LinkButton>
             </div>
-            <ul className={styles.heroTrust}>
-              {hero.trust.map((item) => (
-                <li key={item.label}>
-                  <Icon name={item.icon} size={17} /> {item.label}
-                </li>
-              ))}
-            </ul>
           </div>
 
           <aside className={styles.panel} aria-label="Productos propios">
             <div className={styles.panelTop}>
               <span>{hero.panel.label}</span>
+              <p>{hero.panel.intro}</p>
             </div>
-            <p className={styles.panelIntro}>{hero.panel.intro}</p>
             <ul className={styles.panelProducts}>
               {products.map((product) => (
-                <li key={product.slug} className={styles.panelItem}>
-                  <div className={styles.logoWell}>
-                    <Image
-                      src={product.logo.src}
-                      alt=""
-                      width={product.logo.width}
-                      height={product.logo.height}
-                      sizes="140px"
-                    />
-                  </div>
-                  <div className={styles.panelMeta}>
-                    <strong>{product.name}</strong>
-                    <span>{product.category}</span>
-                    <small>{product.panelTagline}</small>
-                  </div>
+                <li key={product.slug}>
+                  <Link
+                    href={`/productos/${product.slug}`}
+                    className={styles.panelItem}
+                  >
+                    <span className={styles.logoWell}>
+                      <Image
+                        src={product.logo.src}
+                        alt=""
+                        width={product.logo.width}
+                        height={product.logo.height}
+                        sizes="180px"
+                      />
+                    </span>
+                    <span className={styles.panelMeta}>
+                      <strong>{product.name}</strong>
+                      <span>{product.category}</span>
+                      <small>{product.panelTagline}</small>
+                    </span>
+                    <Icon name="arrowRight" size={18} className={styles.panelArrow} />
+                  </Link>
                 </li>
               ))}
             </ul>
-            <div className={styles.panelFlow} aria-hidden="true">
-              {hero.panel.flow.map((step, index) => (
-                <span key={step.label} className={styles.panelFlowStep}>
-                  {index > 0 ? <Icon name="chevronRight" size={13} /> : null}
-                  <span>{step.label}</span>
-                </span>
+            <ol className={styles.panelFlow} aria-label="Cómo conectamos la operación">
+              {hero.panel.flow.map((step) => (
+                <li key={step.label}>{step.label}</li>
               ))}
-            </div>
+            </ol>
           </aside>
         </div>
       </Container>

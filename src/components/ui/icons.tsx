@@ -9,6 +9,7 @@ import type { IconName } from "@/content/types";
 const strokes: Record<Exclude<IconName, "whatsapp">, string> = {
   arrowRight: "M5 12h14M13 6l6 6-6 6",
   arrowLeft: "M19 12H5M11 6l-6 6 6 6",
+  arrowDown: "M12 5v14M6 13l6 6 6-6",
   chevronRight: "M9 6l6 6-6 6",
   chevronDown: "M6 9l6 6 6-6",
   menu: "M4 7h16M4 12h16M4 17h16",
@@ -33,6 +34,20 @@ const strokes: Record<Exclude<IconName, "whatsapp">, string> = {
   external: "M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 0 1-1 1H5a1 1 0 0 1-1-1V7a1 1 0 0 1 1-1h5",
   mail: "M4 6h16v12H4zM4 7l8 6 8-6",
   rotate: "M4.5 12a7.5 7.5 0 1 0 2.4-5.5M4 4v4.5h4.5",
+  database:
+    "M4 6c0-1.7 3.6-3 8-3s8 1.3 8 3-3.6 3-8 3-8-1.3-8-3zM4 6v6c0 1.7 3.6 3 8 3s8-1.3 8-3V6M4 12v6c0 1.7 3.6 3 8 3s8-1.3 8-3v-6",
+  cart: "M3 4h2.5l2.2 10.5a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2M10 20h.01M17 20h.01",
+  receipt: "M6 3h12v18l-3-2-3 2-3-2-3 2zM9 8h6M9 12h6",
+  users:
+    "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20c0-3.3 2.9-5.5 6.5-5.5s6.5 2.2 6.5 5.5M16 4.5a3.3 3.3 0 0 1 0 6.3M18 14.8c2 .6 3.5 2.2 3.5 5.2",
+  plug: "M9 3v5M15 3v5M6 8h12v3a6 6 0 0 1-12 0zM12 17v4",
+  compass: "M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0zM15.5 8.5l-2 5-5 2 2-5z",
+  flag: "M5 21V4M5 4h11l-1.5 4L16 12H5",
+  file: "M7 3h7l4 4v14H7zM14 3v4h4M10 12h5M10 16h5",
+  gauge: "M4 17a8 8 0 1 1 16 0M12 17l4-5M7 17h.01M17 17h.01",
+  link: "M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1",
+  leaf: "M5 19c0-8 5-13 14-14 0 9-5 14-14 14zM5 19c2-4 5-7 9-9",
+  clipboard: "M9 4h6v3H9zM7 5H5v16h14V5h-2M9 12h6M9 16h6",
 };
 
 const whatsappPath =

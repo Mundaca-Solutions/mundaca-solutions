@@ -2,7 +2,7 @@ import Image from "next/image";
 import Link from "next/link";
 import {
   aiLayers,
-  cafetal,
+  foodiesDemo,
   methodSection,
   methodSteps,
   partner,
@@ -13,17 +13,20 @@ import {
   solutionCards,
   solutionsSection,
 } from "@/content/home";
-import { products } from "@/content/products";
+import { productBySlug, products } from "@/content/products";
 import { resultColumns, resultsSection, visibleResults } from "@/content/results";
 import { solutions } from "@/content/solutions";
 import clsx from "@/lib/clsx";
 import { Reveal } from "@/components/motion/Reveal";
+import { CtaBand } from "@/components/ui/CtaBand";
+import { Flow } from "@/components/ui/Flow";
 import { Icon } from "@/components/ui/icons";
 import { LinkButton } from "@/components/ui/LinkButton";
+import { ProductBoard } from "@/components/ui/ProductBoard";
 import { Container, Section, SectionHeading } from "@/components/ui/primitives";
 import styles from "./sections.module.css";
 
-/** Productos propios: two equal-height cards (Foodies, Carbono Zero). */
+/** Productos propios: two equal-height product cards, one primary action each. */
 export function ProductsSection() {
   return (
     <Section id="productos" tone="paper" labelledBy="productos-title">
@@ -35,8 +38,8 @@ export function ProductsSection() {
           text={productsSection.text}
         />
         <Reveal as="ul" stagger className={styles.productGrid}>
-          {products.map((product, index) => (
-            <li key={product.slug} className={`${styles.productCard} ${styles[`tone_${product.tone}`]}`}>
+          {products.map((product) => (
+            <li key={product.slug} className={styles.productCard} data-product={product.tone}>
               <Link
                 className={styles.productLogoLink}
                 href={`/productos/${product.slug}`}
@@ -47,14 +50,11 @@ export function ProductsSection() {
                   alt={`Logo de ${product.name}`}
                   width={product.logo.width}
                   height={product.logo.height}
-                  sizes="(max-width: 52rem) 80vw, 360px"
+                  sizes="(max-width: 52rem) 70vw, 300px"
                 />
               </Link>
               <div className={styles.productBody}>
-                <div className={styles.productTop}>
-                  <small className={styles.productCategory}>{product.category}</small>
-                  <span className={styles.productIndex}>0{index + 1}</span>
-                </div>
+                <small className={styles.productCategory}>{product.category}</small>
                 <h3>{product.name}</h3>
                 <p>{product.text}</p>
                 <strong className={styles.productImpact}>
@@ -67,12 +67,9 @@ export function ProductsSection() {
                 </ul>
               </div>
               <div className={styles.productActions}>
-                <LinkButton href={product.externalUrl} icon="external">
+                <LinkButton href={`/productos/${product.slug}`} icon="arrowRight">
                   {product.ctaLabel}
                 </LinkButton>
-                <Link className={styles.productTextLink} href={`/productos/${product.slug}`}>
-                  Ver la página de {product.name} <Icon name="arrowRight" size={16} />
-                </Link>
               </div>
             </li>
           ))}
@@ -82,59 +79,37 @@ export function ProductsSection() {
   );
 }
 
-/** Caso real Cafetal: three stages of one connected operation. */
-export function CafetalSection() {
+/**
+ * Foodies en acción: the product's real modules (content/products.ts) drawn as one connected operation. No
+ * client, figure or screenshot is invented: it shows what the product declares it does and how the parts connect.
+ */
+export function FoodiesDemoSection() {
+  const foodies = productBySlug("foodies");
+  if (!foodies) throw new Error("content/products.ts: falta el producto Foodies");
+
   return (
-    <Section id="cafetal" tone="deep" labelledBy="cafetal-title">
+    <Section id="foodies" tone="white" labelledBy="foodies-title">
       <Container>
-        <SectionHeading id="cafetal-title" eyebrow={cafetal.eyebrow} title={cafetal.title} text={cafetal.text} />
-        <Reveal className={styles.caseCard}>
-          <div className={styles.caseMeta}>
-            <span className={styles.caseTag}>{cafetal.tag}</span>
-            <span className={styles.caseProduct}>
-              <Icon name="sparkles" size={14} /> {cafetal.product}
-            </span>
-          </div>
-          <ol className={styles.caseStages}>
-            {cafetal.stages.map((stage) => (
-              <li key={stage.title} className={styles.caseStage}>
-                <span className={styles.caseStageIndex}>{stage.index}</span>
-                <h3>{stage.title}</h3>
-                <ul>
-                  {stage.items.map((item) => (
-                    <li key={item}>{item}</li>
-                  ))}
-                </ul>
-              </li>
-            ))}
-          </ol>
-          <p className={styles.caseImpact}>
-            <Icon name="check" size={17} /> {cafetal.impact}
-          </p>
-          <div className={styles.caseAction}>
-            <LinkButton href={products[0].externalUrl} icon="external">
-              {cafetal.ctaLabel}
-            </LinkButton>
-          </div>
-        </Reveal>
+        <SectionHeading
+          id="foodies-title"
+          eyebrow={foodiesDemo.eyebrow}
+          title={foodiesDemo.title}
+          text={foodiesDemo.text}
+        />
+        <ProductBoard product={foodies} showHead forLabel={foodiesDemo.forLabel} forItems={foodiesDemo.forItems} />
       </Container>
     </Section>
   );
 }
 
-/** Principio: eight steps as a paired 4 + 4 grid. */
+/** Principio: eight steps with icons, joined by arrows (a vertical journey on phones). */
 export function PrincipleSection() {
   return (
     <Section id="principio" tone="dark" labelledBy="principio-title">
       <Container>
         <SectionHeading id="principio-title" eyebrow={principle.eyebrow} title={principle.title} onDark />
-        <Reveal as="ol" stagger className={styles.principleGrid}>
-          {principle.steps.map((step, index) => (
-            <li key={step} className={styles.principleStep}>
-              <span>{String(index + 1).padStart(2, "0")}</span>
-              <strong>{step}</strong>
-            </li>
-          ))}
+        <Reveal>
+          <Flow steps={principle.steps} cols={8} tone="dark" numbered label="Nuestro principio, paso a paso" />
         </Reveal>
         <Reveal className={styles.principleNote} delay={100}>
           <p>{principle.note}</p>
@@ -144,33 +119,39 @@ export function PrincipleSection() {
   );
 }
 
-/** Inteligencia artificial en capas: structure first, intelligence after. */
+/** Inteligencia artificial: processes, information, context and decisions first; AI as the enabling technology. */
 export function AiLayersSection() {
   return (
     <Section id="ia" tone="white" labelledBy="ia-title">
       <Container>
-        <div className={styles.aiLayout}>
+        <div className={styles.aiHead}>
           <Reveal className={styles.aiCopy}>
             <span className={styles.aiEyebrow}>{aiLayers.eyebrow}</span>
             <h2 id="ia-title">{aiLayers.title}</h2>
+          </Reveal>
+          <Reveal className={styles.aiText} delay={80}>
             <p>{aiLayers.text}</p>
           </Reveal>
-          <Reveal as="ol" stagger className={styles.aiStack} delay={80}>
-            {[...aiLayers.layers].reverse().map((layer) => (
-              <li key={layer.title} className={layer.index === "Capa 4" ? styles.aiTop : undefined}>
-                <small>{layer.index}</small>
-                <strong>{layer.title}</strong>
-                <span>{layer.note}</span>
-              </li>
-            ))}
-          </Reveal>
         </div>
+        <Reveal>
+          <Flow steps={aiLayers.chain} cols={4} label="De los procesos a las decisiones" className={styles.aiChain} />
+        </Reveal>
+        <Reveal className={styles.enabler} delay={80}>
+          <span className={styles.enablerIcon}>
+            <Icon name="sparkles" size={22} />
+          </span>
+          <div>
+            <small>{aiLayers.enabler.label}</small>
+            <strong>{aiLayers.enabler.title}</strong>
+          </div>
+          <p>{aiLayers.enabler.text}</p>
+        </Reveal>
       </Container>
     </Section>
   );
 }
 
-/** Problems: a paired grid of four. */
+/** Problems: four nodes that converge into one connected operation (same visual language as the principle). */
 export function ProblemsSection() {
   return (
     <Section id="problemas" tone="paper" labelledBy="problemas-title">
@@ -181,26 +162,32 @@ export function ProblemsSection() {
           title={problemsSection.title}
           text={problemsSection.text}
         />
-        <Reveal as="ul" stagger className={styles.problemGrid}>
-          {problems.map((problem, index) => (
-            <li key={problem.title} className={styles.problemCard}>
-              <div className={styles.cardHead}>
-                <span className={styles.iconTile}>
-                  <Icon name={problem.icon} size={22} />
-                </span>
-                <small>0{index + 1}</small>
-              </div>
+        <Reveal as="ul" stagger className={styles.problemList}>
+          {problems.map((problem) => (
+            <li key={problem.title} className={styles.problem}>
+              <span className={styles.node}>
+                <Icon name={problem.icon} size={22} />
+              </span>
               <h3>{problem.title}</h3>
               <p>{problem.text}</p>
             </li>
           ))}
         </Reveal>
-        <Reveal className={styles.inlineCta}>
-          <div>
+        <Reveal className={styles.converge}>
+          <span className={styles.convergeIcon}>
+            <Icon name="link" size={22} />
+          </span>
+          <p>
+            <strong>{problemsSection.outcome.title}</strong>
+            <span>{problemsSection.outcome.text}</span>
+          </p>
+        </Reveal>
+        <Reveal className={styles.quietCta}>
+          <p>
             <small>{problemsSection.cta.kicker}</small>
             <strong>{problemsSection.cta.title}</strong>
-          </div>
-          <LinkButton href="/#contacto" icon="arrowRight">
+          </p>
+          <LinkButton href="/#contacto" variant="secondary" icon="arrowRight">
             {problemsSection.cta.label}
           </LinkButton>
         </Reveal>
@@ -209,7 +196,7 @@ export function ProblemsSection() {
   );
 }
 
-/** Soluciones (dark): four cards in a 2 × 2 grid + links to the three solution pages. */
+/** Soluciones (dark): one connected board of four capabilities + links to the three solution pages. */
 export function SolutionsSection() {
   return (
     <Section id="soluciones" tone="dark" labelledBy="soluciones-title">
@@ -221,15 +208,12 @@ export function SolutionsSection() {
           text={solutionsSection.text}
           onDark
         />
-        <Reveal as="ul" stagger className={styles.solutionGrid}>
-          {solutionCards.map((card, index) => (
-            <li key={card.title} className={styles.solutionCard}>
-              <div className={styles.cardHead}>
-                <span className={styles.iconTileDark}>
-                  <Icon name={card.icon} size={22} />
-                </span>
-                <small>0{index + 1}</small>
-              </div>
+        <Reveal as="ul" stagger className={styles.solutionBoard}>
+          {solutionCards.map((card) => (
+            <li key={card.title} className={styles.solutionCell}>
+              <span className={styles.nodeDark}>
+                <Icon name={card.icon} size={22} />
+              </span>
               <h3>{card.title}</h3>
               <p>{card.text}</p>
               <ul className={styles.bullets}>
@@ -259,24 +243,23 @@ export function SolutionsSection() {
           </ul>
         </Reveal>
 
-        <Reveal className={styles.solutionCta}>
-          <div>
-            <span>{solutionsSection.cta.kicker}</span>
-            <strong>{solutionsSection.cta.title}</strong>
-          </div>
-          <LinkButton href="/#contacto" variant="lightOnDark" icon="arrowRight">
-            {solutionsSection.cta.label}
-          </LinkButton>
-        </Reveal>
+        <div className={styles.solutionCta}>
+          <CtaBand
+            kicker={solutionsSection.cta.kicker}
+            title={solutionsSection.cta.title}
+            href="/#contacto"
+            label={solutionsSection.cta.label}
+          />
+        </div>
       </Container>
     </Section>
   );
 }
 
-/** Método: four steps. Also reused by the solution pages. */
+/** Método: four stages on a vertical rail. Also reused by the solution pages. */
 export function MethodSection({ compact = false }: { compact?: boolean }) {
   return (
-    <Section id="metodo" tone={compact ? "white" : "paper"} labelledBy="metodo-title">
+    <Section id="metodo" tone={compact ? "paper" : "white"} labelledBy="metodo-title">
       <Container>
         <div className={styles.methodLayout}>
           <Reveal className={styles.methodIntro}>
@@ -291,22 +274,18 @@ export function MethodSection({ compact = false }: { compact?: boolean }) {
               </span>
             </div>
           </Reveal>
-          <Reveal as="ol" stagger className={styles.methodSteps}>
-            {methodSteps.map((step, index) => (
-              <li key={step.title} className={styles.methodStep}>
-                <span className={styles.stepNumber}>0{index + 1}</span>
-                <span className={styles.iconTile}>
-                  <Icon name={step.icon} size={21} />
-                </span>
-                <div>
-                  <h3>{step.title}</h3>
-                  <p>{step.text}</p>
-                  <small>
-                    <Icon name="check" size={14} /> {step.deliverable}
-                  </small>
-                </div>
-              </li>
-            ))}
+          <Reveal className={styles.methodRail} delay={80}>
+            <Flow
+              steps={methodSteps.map((step) => ({
+                icon: step.icon,
+                title: step.title,
+                text: step.text,
+                meta: step.deliverable,
+              }))}
+              variant="rail"
+              numbered
+              label="Etapas del trabajo"
+            />
           </Reveal>
         </div>
       </Container>
@@ -314,20 +293,22 @@ export function MethodSection({ compact = false }: { compact?: boolean }) {
   );
 }
 
-/** Socio tecnológico (dark): four values + the problem-to-result path. */
+/** Socio tecnológico: compact attribute list on the left, the problem-to-result path on the right. */
 export function PartnerSection() {
   return (
-    <Section id="socio" tone="dark" labelledBy="socio-title">
+    <Section id="socio" tone="paper" labelledBy="socio-title">
       <Container>
         <div className={styles.partnerLayout}>
           <Reveal className={styles.partnerCopy}>
-            <span className={styles.partnerEyebrow}>{partner.eyebrow}</span>
+            <span className={styles.aiEyebrow}>{partner.eyebrow}</span>
             <h2 id="socio-title">{partner.title}</h2>
             <p>{partner.text}</p>
             <ul className={styles.values}>
               {partner.values.map((value) => (
                 <li key={value.title}>
-                  <Icon name={value.icon} size={20} />
+                  <span className={styles.nodeSm}>
+                    <Icon name={value.icon} size={19} />
+                  </span>
                   <div>
                     <strong>{value.title}</strong>
                     <span>{value.text}</span>
@@ -337,26 +318,21 @@ export function PartnerSection() {
             </ul>
           </Reveal>
           <Reveal className={styles.partnerCard} delay={100}>
-            <small>{partner.card.kicker}</small>
-            <strong>{partner.card.title}</strong>
-            <ol className={styles.partnerFlow}>
-              {partner.card.flow.map((step) => (
-                <li key={step.label}>
-                  <Icon name={step.icon} size={21} />
-                  {step.label}
-                </li>
-              ))}
-            </ol>
-            <div className={styles.partnerResult}>
-              <small>{partner.card.resultKicker}</small>
-              <strong>{partner.card.resultTitle}</strong>
-              <ul>
-                {partner.card.resultChips.map((chip) => (
-                  <li key={chip}>
-                    <Icon name="check" size={13} /> {chip}
-                  </li>
-                ))}
-              </ul>
+            <div data-surface="dark" className={styles.partnerCardInner}>
+              <small>{partner.card.kicker}</small>
+              <strong>{partner.card.title}</strong>
+              <Flow steps={partner.card.flow} variant="rail" tone="dark" label="De problema a resultado" />
+              <div className={styles.partnerResult}>
+                <small>{partner.card.resultKicker}</small>
+                <strong>{partner.card.resultTitle}</strong>
+                <ul>
+                  {partner.card.resultChips.map((chip) => (
+                    <li key={chip}>
+                      <Icon name="check" size={13} /> {chip}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </Reveal>
         </div>
@@ -366,13 +342,15 @@ export function PartnerSection() {
 }
 
 /**
- * Resultados: the last section of the home. One equal-height card per site that is live AND authorized
- * (content/results.ts); each "Visitar sitio" button goes to the real site in a new tab.
+ * Resultados: systems delivered to clients. It only draws sites that are live AND authorized by the owner
+ * (content/results.ts); while there are none the whole section is omitted instead of showing an empty or invented one.
  */
 export function ResultsSection() {
+  if (visibleResults.length === 0) return null;
   const columns = resultColumns(visibleResults.length);
+
   return (
-    <Section id="resultados" tone="paper" labelledBy="resultados-title">
+    <Section id="resultados" tone="white" labelledBy="resultados-title">
       <Container>
         <SectionHeading
           id="resultados-title"
@@ -388,9 +366,11 @@ export function ResultsSection() {
         >
           {visibleResults.map((card) => (
             <li key={card.slug} className={styles.resultCard} data-result={card.slug}>
-              <div className={styles.resultTop}>
-                <small className={styles.resultKind}>{resultsSection.kindLabel[card.kind]}</small>
-              </div>
+              {card.image ? (
+                <div className={styles.resultShot}>
+                  <Image src={card.image.src} alt={card.image.alt} width={card.image.width} height={card.image.height} sizes="(max-width: 48rem) 90vw, 380px" />
+                </div>
+              ) : null}
               <h3>{card.name}</h3>
               <p className={styles.resultRubro}>{card.rubro}</p>
               <p className={styles.resultSolved}>{card.solved}</p>

@@ -3,13 +3,13 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   aiLayers,
-  cafetal,
+  foodiesDemo,
   hero,
   methodSteps,
   principle,
   problems,
   solutionCards,
-  tickerMessages,
+  valueProps,
 } from "@/content/home";
 import { privacy, terms } from "@/content/legal";
 import { productBySlug, products, productSlugs } from "@/content/products";
@@ -58,18 +58,40 @@ describe("content integrity", () => {
     expect(principle.steps).toHaveLength(8);
   });
 
-  it("has four AI layers, structure first and intelligence last", () => {
-    expect(aiLayers.layers.map((layer) => layer.title)).toEqual(["Procesos", "Datos", "Reglas", "Inteligencia artificial"]);
+  it("puts processes, information, context and decisions first, and AI as the enabling technology", () => {
+    expect(aiLayers.chain.map((step) => step.title)).toEqual(["Procesos", "Información", "Contexto", "Decisiones"]);
+    expect(aiLayers.enabler.title).toBe("Inteligencia artificial");
+    expect(aiLayers.title).toMatch(/No vendemos inteligencia artificial/);
   });
 
-  it("has a paired set of problems (4), method steps (4) and cafetal stages (3)", () => {
+  it("has a paired set of problems (4) and method steps (4)", () => {
     expect(problems).toHaveLength(4);
     expect(methodSteps).toHaveLength(4);
-    expect(cafetal.stages).toHaveLength(3);
   });
 
-  it("has ticker messages without duplicates", () => {
-    expect(new Set(tickerMessages).size).toBe(tickerMessages.length);
+  it("gives every principle step an icon", () => {
+    for (const step of principle.steps) expect(step.icon, step.title).toBeTruthy();
+  });
+
+  it("has exactly three value propositions, without duplicates (they replace the ticker)", () => {
+    expect(valueProps).toHaveLength(3);
+    expect(new Set(valueProps.map((item) => item.title)).size).toBe(3);
+  });
+
+  it("shows Foodies through its four real modules, in operation order, and Carbono Zero through its five", () => {
+    expect(productBySlug("foodies")?.flow.steps.map((step) => step.title)).toEqual([
+      "Ventas y pedidos",
+      "Cobro y caja",
+      "Productos e inventario",
+      "Reportes",
+    ]);
+    expect(productBySlug("carbono-zero")?.flow.steps).toHaveLength(5);
+    expect(foodiesDemo.forItems).toEqual(["Restaurantes", "Cafeterías", "Minimarkets"]);
+  });
+
+  it("does not mention Cafetal in the navigation or in any content (no closed contract)", () => {
+    const text = JSON.stringify([navItems, hero, valueProps, products, solutions, foodiesDemo, principle]);
+    expect(text).not.toMatch(/cafetal/i);
   });
 
   it("keeps legal texts complete and routes unchanged", () => {

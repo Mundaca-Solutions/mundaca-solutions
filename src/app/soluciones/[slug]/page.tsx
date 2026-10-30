@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import { solutionCards, problems } from "@/content/home";
@@ -7,11 +8,12 @@ import { solutionBySlug, solutions } from "@/content/solutions";
 import { Reveal } from "@/components/motion/Reveal";
 import { MethodSection } from "@/components/sections/HomeSections";
 import { PageHero } from "@/components/sections/PageHero";
+import { SolutionVisual } from "@/components/sections/SolutionVisual";
+import { CtaBand } from "@/components/ui/CtaBand";
 import { Icon } from "@/components/ui/icons";
-import { LinkButton } from "@/components/ui/LinkButton";
-import { Container } from "@/components/ui/primitives";
+import { Container, Section } from "@/components/ui/primitives";
 import { pageMetadata } from "@/lib/seo";
-import styles from "@/components/sections/pages.module.css";
+import styles from "@/components/sections/inner.module.css";
 
 type Params = { slug: string };
 
@@ -33,6 +35,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   });
 }
 
+/** Solution page: the idea in one picture, what we do, the problem it answers, the method, one closing action. */
 export default async function SolutionPage({ params }: { params: Promise<Params> }) {
   const { slug } = await params;
   const solution = solutionBySlug(slug);
@@ -55,75 +58,105 @@ export default async function SolutionPage({ params }: { params: Promise<Params>
         lead={solution.lead}
       />
 
-      <div className={styles.page}>
+      <Section tone="white" labelledBy="solucion-titulo" className={styles.pageSection}>
         <Container>
-          <section className={styles.block}>
-            <h2>{solution.sectionTitle}</h2>
+          <Reveal className={styles.intro}>
+            <h2 id="solucion-titulo">{solution.sectionTitle}</h2>
             <p>{solution.sectionText}</p>
-            <div className={styles.ctaRow}>
-              <LinkButton href="/contacto" size="lg" icon="arrowRight">
-                {solution.ctaLabel}
-              </LinkButton>
-            </div>
-          </section>
+          </Reveal>
+          <SolutionVisual visual={solution.visual} />
+        </Container>
+      </Section>
 
-          {cards.length > 0 ? (
-            <>
-              <h2 className={styles.subHeading}>Qué hacemos</h2>
-              <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
-                {cards.map((card) => (
-                  <li key={card.title} className={styles.card}>
-                    <h3>{card.title}</h3>
-                    <p>{card.text}</p>
-                    <ul className={styles.list}>
-                      {card.bullets.map((bullet) => (
-                        <li key={bullet}>
-                          <Icon name="check" size={17} /> {bullet}
-                        </li>
-                      ))}
-                    </ul>
-                  </li>
-                ))}
+      <Section tone="paper" labelledBy="solucion-hacemos" className={styles.pageSection}>
+        <Container>
+          <div className={styles.doSolve}>
+            {cards.length > 0 ? (
+              <Reveal className={styles.doColumn}>
+                <h2 id="solucion-hacemos">Qué hacemos</h2>
+                <ul>
+                  {cards.map((card) => (
+                    <li key={card.title}>
+                      <span className={styles.node}>
+                        <Icon name={card.icon} size={21} />
+                      </span>
+                      <div>
+                        <h3>{card.title}</h3>
+                        <p>{card.text}</p>
+                        <ul className={styles.checks}>
+                          {card.bullets.map((bullet) => (
+                            <li key={bullet}>
+                              <Icon name="check" size={15} /> {bullet}
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </Reveal>
-            </>
-          ) : null}
-
-          {solved.length > 0 ? (
-            <>
-              <h2 className={styles.subHeading}>El problema que resuelve</h2>
-              <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
-                {solved.map((problem) => (
-                  <li key={problem.title} className={styles.card}>
-                    <h3>{problem.title}</h3>
-                    <p>{problem.text}</p>
-                  </li>
-                ))}
+            ) : null}
+            {solved.length > 0 ? (
+              <Reveal className={styles.solveColumn} delay={80}>
+                <h2>El problema que resuelve</h2>
+                <ul>
+                  {solved.map((problem) => (
+                    <li key={problem.title}>
+                      <span className={styles.nodeDark}>
+                        <Icon name={problem.icon} size={21} />
+                      </span>
+                      <div>
+                        <h3>{problem.title}</h3>
+                        <p>{problem.text}</p>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
               </Reveal>
-            </>
-          ) : null}
+            ) : null}
+          </div>
+        </Container>
+      </Section>
 
-          {solution.showProducts ? (
-            <>
-              <h2 className={styles.subHeading}>La inteligencia operacional ya está en nuestros productos</h2>
-              <Reveal as="ul" stagger className={`${styles.cardGrid} ${styles.two}`}>
-                {products.map((product) => (
-                  <li key={product.slug} className={styles.card}>
+      {solution.showProducts ? (
+        <Section tone="white" labelledBy="solucion-productos" className={styles.pageSection}>
+          <Container>
+            <Reveal className={styles.intro}>
+              <h2 id="solucion-productos">La inteligencia operacional ya está en nuestros productos</h2>
+            </Reveal>
+            <Reveal as="ul" stagger className={styles.proofs}>
+              {products.map((product) => (
+                <li key={product.slug}>
+                  <div className={styles.logoStage}>
+                    <Image
+                      src={product.logo.src}
+                      alt={`Logo de ${product.name}`}
+                      width={product.logo.width}
+                      height={product.logo.height}
+                      sizes="200px"
+                    />
+                  </div>
+                  <div>
                     <h3>{product.name}</h3>
                     <p>{product.proof}</p>
-                    <div className={styles.cardActions}>
-                      <Link className={styles.textLink} href={`/productos/${product.slug}`}>
-                        Ver {product.name} <Icon name="arrowRight" size={16} />
-                      </Link>
-                    </div>
-                  </li>
-                ))}
-              </Reveal>
-            </>
-          ) : null}
-        </Container>
-      </div>
+                    <Link className={styles.textLink} href={`/productos/${product.slug}`}>
+                      Ver {product.name} <Icon name="arrowRight" size={16} />
+                    </Link>
+                  </div>
+                </li>
+              ))}
+            </Reveal>
+          </Container>
+        </Section>
+      ) : null}
 
       <MethodSection compact />
+
+      <Section tone="white" className={styles.ctaSection}>
+        <Container>
+          <CtaBand title={solution.sectionTitle} href="/contacto" label={solution.ctaLabel} />
+        </Container>
+      </Section>
     </>
   );
 }

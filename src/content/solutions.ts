@@ -1,11 +1,29 @@
-import type { NavChild } from "./types";
+import type { FlowStepData, IconName, NavChild } from "./types";
 
 /**
  * Páginas de solución. Los textos principales existían ya; las páginas se enriquecen reutilizando
- * (sin inventar) las tarjetas, problemas y método de la home, referenciados por índice/slug.
+ * (sin inventar) las tarjetas, problemas y método de la home, referenciados por índice/slug. Cada solución
+ * lleva su propia representación visual (`visual`), con vocabulario que ya usa el sitio.
  */
 
 export type SolutionSlug = "software-a-medida" | "automatizacion-procesos" | "inteligencia-operacional";
+
+export type SolutionVisual =
+  | {
+      kind: "need-to-solution";
+      need: { title: string; items: readonly { icon: IconName; label: string }[] };
+      bridge: string;
+      solution: { title: string; items: readonly string[] };
+    }
+  | {
+      kind: "stages";
+      stages: readonly { icon: IconName; kicker: string; title: string; items: readonly string[] }[];
+    }
+  | {
+      kind: "chain";
+      steps: readonly FlowStepData[];
+      enabler: { title: string; text: string };
+    };
 
 export type Solution = {
   slug: SolutionSlug;
@@ -25,6 +43,7 @@ export type Solution = {
   problemIndexes: readonly number[];
   /** Show the two products as proof (the page already linked them before). */
   showProducts: boolean;
+  visual: SolutionVisual;
 };
 
 export const solutions: readonly Solution[] = [
@@ -45,6 +64,23 @@ export const solutions: readonly Solution[] = [
     ctaLabel: "Cuéntanos qué necesitas resolver",
     problemIndexes: [0, 3],
     showProducts: false,
+    visual: {
+      kind: "need-to-solution",
+      need: {
+        title: "Una necesidad operacional",
+        items: [
+          { icon: "workflow", label: "Procesos y reglas" },
+          { icon: "users", label: "Usuarios y roles" },
+          { icon: "database", label: "Datos" },
+          { icon: "plug", label: "Integraciones" },
+        ],
+      },
+      bridge: "Diseñamos y construimos por etapas verificables",
+      solution: {
+        title: "Una solución funcional",
+        items: ["Procesos conectados", "Información centralizada", "Control operacional", "Evolución por etapas"],
+      },
+    },
   },
   {
     slug: "automatizacion-procesos",
@@ -63,6 +99,29 @@ export const solutions: readonly Solution[] = [
     ctaLabel: "Evaluar un proceso",
     problemIndexes: [1],
     showProducts: false,
+    visual: {
+      kind: "stages",
+      stages: [
+        {
+          icon: "clipboard",
+          kicker: "Hoy",
+          title: "Proceso manual",
+          items: ["Tareas repetitivas", "Traspasos innecesarios", "Errores que se multiplican"],
+        },
+        {
+          icon: "plug",
+          kicker: "Lo que construimos",
+          title: "Automatización e integración",
+          items: ["Flujos automatizados", "Alertas relevantes", "Integraciones"],
+        },
+        {
+          icon: "shield",
+          kicker: "Resultado",
+          title: "Operación controlada",
+          items: ["Responsables definidos", "Excepciones visibles", "Trazabilidad"],
+        },
+      ],
+    },
   },
   {
     slug: "inteligencia-operacional",
@@ -81,6 +140,19 @@ export const solutions: readonly Solution[] = [
     ctaLabel: "Conversemos sobre tu operación",
     problemIndexes: [2],
     showProducts: true,
+    visual: {
+      kind: "chain",
+      steps: [
+        { icon: "database", title: "Fuentes de datos", text: "Información que hoy vive entre planillas, mensajes y herramientas." },
+        { icon: "workflow", title: "Procesos", text: "Datos ordenados según cómo opera realmente la empresa." },
+        { icon: "gauge", title: "Indicadores", text: "KPIs accionables y visibilidad ejecutiva." },
+        { icon: "compass", title: "Decisiones", text: "Contexto para detectar desviaciones y priorizar dónde actuar." },
+      ],
+      enabler: {
+        title: "La inteligencia artificial complementa",
+        text: "Explica y relaciona sobre datos que el sistema ya estructuró; no reemplaza la base ni es el producto.",
+      },
+    },
   },
 ];
 

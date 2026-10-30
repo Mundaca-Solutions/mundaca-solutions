@@ -59,7 +59,7 @@ Reglas:
 
 Sin fotos de stock ni ilustraciones inventadas. Se usan los logos reales de Foodies y Carbono Zero sobre
 "pozos" blancos (sus fondos son claros) y diagramas hechos con CSS/SVG propios a partir del contenido que ya
-existía (flujo del caso Cafetal, capas de inteligencia, principio en ocho pasos).
+existía (flujo real de Foodies, cadena procesos → decisiones, principio en ocho pasos).
 
 ## Densidad y forma
 
@@ -70,22 +70,22 @@ sombra suave; botones y píldoras con radio 999 px; íconos propios de trazo uni
 ## Movimiento
 
 Entrada de página con `app/template.tsx` (≈ 480 ms, fundido + 14 px), `Reveal` al hacer scroll con
-IntersectionObserver, ticker lento que se pausa al pasar el cursor, hover con elevación de 2–4 px. Todo
+IntersectionObserver, hover con elevación de 2–4 px. Todo
 respeta `prefers-reduced-motion`. Sin framer-motion y sin transiciones con blur por ruta.
 
 ## Composición de la home (orden fijo)
 
-1. Hero oscuro con onda y panel de productos propios.
-2. Ticker (solo mensajes que ya existían en el sitio).
+1. Hero oscuro sin onda, unido al header (mismo azul sólido), con panel de productos propios.
+2. Franja de tres propuestas de valor (estática; ya no hay ticker).
 3. Productos propios (Carbono Zero, Foodies) en tarjetas de igual altura.
-4. Caso real Cafetal.
-5. Principio: ocho pasos en rejilla 4 + 4.
-6. Inteligencia artificial en capas.
-7. Problemas (rejilla pareada).
+4. Foodies en acción: los módulos reales del producto como una operación conectada (sin clientes ni cifras inventadas).
+5. Principio: ocho pasos con íconos unidos por flechas (una fila en escritorio, recorrido vertical en móvil).
+6. Inteligencia artificial como tecnología habilitadora (procesos → información → contexto → decisiones).
+7. Problemas: cuatro nodos que convergen en una operación conectada.
 8. Soluciones (sección oscura, rejilla 2 × 2) con enlace a las tres páginas de solución.
 9. Método.
 10. Socio tecnológico.
-11. Resultados (Fase 7; se construye al final).
+11. Resultados: solo clientes autorizados; la sección se omite mientras no haya ninguno.
 12. Contacto con formulario.
 13. Footer con las tres soluciones y los legales.
 
@@ -99,3 +99,10 @@ de referencia vive en `docs/madeby/`.
 
 - Fase 1 (rama `remodelacion-estandar-premium`): reconstrucción completa. Ver `docs/MACROFASE_ESTANDAR.md`.
 - Pendiente de decisión del dueño: correo visible (ver `docs/MACROFASE_ESTANDAR.md`).
+
+## Refinación premium (octubre 2026)
+
+- Superficies claras en blanco y neutros fríos (`--ms-paper #f4f7fb`); se retiró el crema/beige. Azul profundo y latón se mantienen.
+- Lenguaje común: nodos con ícono unidos por líneas y flechas (`components/ui/Flow.tsx`), hairlines en vez de tarjetas apiladas.
+- Cada producto conserva su identidad (`data-product` en `brand.css`: Foodies naranja/grafito, Carbono Zero verde); no usa el latón corporativo.
+- El caso Cafetal se retiró del sitio (contrato no cerrado). Resultados solo muestra clientes autorizados por el dueño.

@@ -1,5 +1,8 @@
+import type { FlowStepData } from "./types";
+
 /**
- * Productos propios. Todo el texto existía ya en el sitio (home y páginas /productos/*).
+ * Productos propios. Todo el texto existía ya en el sitio (home y páginas /productos/*); los diagramas
+ * (`flow`) solo ordenan las capacidades que el producto ya declara, sin inventar funciones ni cifras.
  * Las páginas /productos/[slug] se generan desde estos datos.
  */
 
@@ -10,6 +13,17 @@ export type HubSection = {
   text: string;
   cards?: { title: string; list?: readonly string[]; text?: string }[];
   cta?: { label: string };
+};
+
+export type ProductFlow = {
+  /** Heading of the diagram on the product page. */
+  title: string;
+  intro: string;
+  steps: readonly FlowStepData[];
+  /** Optional lanes under the diagram: who works on which nodes (span = number of nodes). */
+  lanes?: readonly { title: string; text: string; span: number }[];
+  /** The line that ties the diagram together. */
+  truth: { title: string; text: string };
 };
 
 export type Product = {
@@ -30,6 +44,8 @@ export type Product = {
   indexCard: { eyebrow: string; text: string; forWho: string; visitLabel: string; hubLabel: string };
   /** One-line proof used by the "inteligencia operacional" solution page (existing copy). */
   proof: string;
+  /** Capabilities the product already declares, drawn as a connected diagram. */
+  flow: ProductFlow;
   /** Landing hub inside mundacasolutions.com. */
   hub: {
     metaTitle: string;
@@ -64,6 +80,21 @@ const catalog: readonly Product[] = [
       hubLabel: "Conocer Carbono Zero dentro del portfolio",
     },
     proof: "Inteligencia ambiental para proyectos de construcción y trazabilidad.",
+    flow: {
+      title: "Del dato disperso a la trazabilidad ambiental",
+      intro: "Cinco capacidades conectadas: lo que se diseña, se compra y se ejecuta queda relacionado con su evidencia y su desempeño.",
+      steps: [
+        { icon: "layers", title: "Diseño y planificación", text: "Decisiones de diseño y ejecución del proyecto." },
+        { icon: "boxes", title: "Materiales", text: "Datos de materiales y su impacto." },
+        { icon: "file", title: "Evidencia", text: "Evidencia y documentación ambiental." },
+        { icon: "gauge", title: "Indicadores", text: "Indicadores de huella y desempeño (CO₂e)." },
+        { icon: "leaf", title: "Trazabilidad", text: "Qué se registró, de dónde viene y cómo se relaciona." },
+      ],
+      truth: {
+        title: "Un proyecto entendido como sistema",
+        text: "Modelo, obra y trazabilidad relacionados en un mismo lugar.",
+      },
+    },
     hub: {
       metaTitle: "Carbono Zero | Gestión ambiental para construcción",
       metaDescription:
@@ -121,6 +152,21 @@ const catalog: readonly Product[] = [
       hubLabel: "Conocer Foodies dentro del portfolio",
     },
     proof: "Inteligencia para ventas, caja, inventario y operación comercial.",
+    flow: {
+      title: "Cómo se conectan ventas, caja, inventario y reportes",
+      intro: "Cuatro módulos que comparten la misma información: lo que ocurre en la venta queda disponible para el cierre, el inventario y los reportes.",
+      steps: [
+        { icon: "cart", title: "Ventas y pedidos", text: "Ventas, pedidos y punto de atención." },
+        { icon: "receipt", title: "Cobro y caja", text: "Caja y cierres con trazabilidad." },
+        { icon: "boxes", title: "Productos e inventario", text: "Productos, stock e inventario." },
+        { icon: "barChart", title: "Reportes", text: "Reportes e inteligencia operacional." },
+      ],
+      lanes: [
+        { title: "Equipo", text: "Ejecuta pedidos y cobros", span: 2 },
+        { title: "Administración", text: "Revisa inventario, cierres y tendencias", span: 2 },
+      ],
+      truth: { title: "Una fuente de verdad común", text: "Todo el equipo trabaja sobre la misma información." },
+    },
     hub: {
       metaTitle: "Foodies | Software de gestión para negocios",
       metaDescription:
@@ -160,7 +206,7 @@ const catalog: readonly Product[] = [
   },
 ];
 
-/** Display order everywhere (home, /productos, footer, results): Foodies first, then Carbono Zero. */
+/** Display order everywhere (home, /productos, footer): Foodies first, then Carbono Zero. */
 export const productSlugs: readonly ProductSlug[] = ["foodies", "carbono-zero"];
 
 // Loud in both directions: a product in the catalog but not in `productSlugs` would silently vanish.

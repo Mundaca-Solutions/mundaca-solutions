@@ -32,13 +32,12 @@ test.describe("home grids are paired and equal-height", () => {
     if (isDesktop(info)) expect(Math.abs(cards[0]!.top - cards[1]!.top)).toBeLessThanOrEqual(1);
   });
 
-  test("principio: eight steps as 4 + 4 (2 × 4 on phones), equal cells", async ({ page }, info) => {
-    const steps = await boxes(page, "#principio > div > ol > li");
+  test("principio: eight steps in one row on desktop, a vertical journey on phones", async ({ page }, info) => {
+    const steps = await boxes(page, "#principio ol > li");
     expect(steps).toHaveLength(8);
-    expect(rowSizes(steps)).toEqual(isDesktop(info) ? [4, 4] : [2, 2, 2, 2]);
-    expectEqualHeightsPerRow(steps);
-    const widths = steps.map((step) => step.width);
-    expect(Math.max(...widths) - Math.min(...widths)).toBeLessThanOrEqual(1);
+    expect(rowSizes(steps)).toEqual(isDesktop(info) ? [8] : [1, 1, 1, 1, 1, 1, 1, 1]);
+    // Every step is an icon node joined to the next one by a line.
+    await expect(page.locator("#principio ol > li svg")).toHaveCount(8);
   });
 
   test("problemas: four cards in one row on desktop, stacked on phones, equal heights", async ({ page }, info) => {
@@ -55,11 +54,26 @@ test.describe("home grids are paired and equal-height", () => {
     expectEqualHeightsPerRow(cards);
   });
 
-  test("caso Cafetal: three equal stages in a row on desktop", async ({ page }, info) => {
-    const stages = await boxes(page, "#cafetal ol > li");
-    expect(stages).toHaveLength(3);
-    expect(rowSizes(stages)).toEqual(isDesktop(info) ? [3] : [1, 1, 1]);
-    expectEqualHeightsPerRow(stages);
+  test("foodies en acción: the four real modules in one row on desktop, stacked on phones", async ({ page }, info) => {
+    const modules = await boxes(page, "#foodies ol > li");
+    expect(modules).toHaveLength(4);
+    expect(rowSizes(modules)).toEqual(isDesktop(info) ? [4] : [1, 1, 1, 1]);
+  });
+
+  test("the header is the same solid navy as the hero and touches it: no strip in between", async ({ page }) => {
+    const gap = await page.evaluate(() => {
+      const header = document.querySelector("header")!.getBoundingClientRect();
+      const hero = document.querySelector("#inicio")!.getBoundingClientRect();
+      return Math.abs(hero.top - header.bottom);
+    });
+    expect(gap).toBeLessThanOrEqual(1);
+  });
+
+  test("hero: both calls to action share a row on desktop", async ({ page }, info) => {
+    test.skip(!isDesktop(info), "side by side on desktop");
+    const buttons = await boxes(page, "#inicio a[class*='button']");
+    expect(buttons.length).toBeGreaterThanOrEqual(2);
+    expect(Math.abs(buttons[0]!.top - buttons[1]!.top)).toBeLessThanOrEqual(1);
   });
 
   test("cards share the container's left and right edges", async ({ page }, info) => {
@@ -85,10 +99,10 @@ test.describe("home grids are paired and equal-height", () => {
     expect(broken).toEqual([]);
   });
 
-  test("the ticker clone is hidden from assistive technology", async ({ page }) => {
-    const lists = page.locator("section[aria-label] ul[data-clone]");
-    await expect(lists).toHaveCount(1);
-    await expect(lists).toHaveAttribute("aria-hidden", "true");
+  test("under the hero there are three static value propositions (no ticker, no moving clone)", async ({ page }) => {
+    const band = page.locator("section[aria-label='Cómo trabajamos contigo']");
+    await expect(band.locator("li")).toHaveCount(3);
+    await expect(page.locator("[data-clone]")).toHaveCount(0);
   });
 });
 
@@ -134,7 +148,7 @@ test.describe("header", () => {
     await page.getByRole("button", { name: "Abrir menú" }).click();
     const sheet = page.locator("#mobile-nav");
     await expect(sheet).toBeVisible();
-    for (const label of ["Productos", "Software a medida", "Automatización de procesos", "Inteligencia operacional", "Caso Cafetal", "Cómo trabajamos", "Contacto"]) {
+    for (const label of ["Productos", "Software a medida", "Automatización de procesos", "Inteligencia operacional", "Cómo trabajamos", "Contacto"]) {
       await expect(sheet.getByRole("link", { name: label, exact: true })).toBeVisible();
     }
     expect(await page.evaluate(() => document.body.style.overflow)).toBe("hidden");

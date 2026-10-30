@@ -3,7 +3,7 @@ import { ContactSection } from "@/components/sections/ContactSection";
 import { Hero } from "@/components/sections/Hero";
 import {
   AiLayersSection,
-  CafetalSection,
+  FoodiesDemoSection,
   MethodSection,
   PartnerSection,
   PrincipleSection,
@@ -12,7 +12,7 @@ import {
   ResultsSection,
   SolutionsSection,
 } from "@/components/sections/HomeSections";
-import { Ticker } from "@/components/sections/Ticker";
+import { ValueBand } from "@/components/sections/ValueBand";
 import { graph, professionalServiceSchema } from "@/lib/seo";
 
 /**
@@ -24,9 +24,9 @@ export default function Home() {
     <>
       <JsonLd data={graph(professionalServiceSchema())} />
       <Hero />
-      <Ticker />
+      <ValueBand />
       <ProductsSection />
-      <CafetalSection />
+      <FoodiesDemoSection />
       <PrincipleSection />
       <AiLayersSection />
       <ProblemsSection />

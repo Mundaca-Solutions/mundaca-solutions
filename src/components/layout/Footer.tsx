@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { contactEmail, legalLinks, site } from "@/content/site";
+import { contactEmail, isExternalHref, legalLinks, site } from "@/content/site";
 import { solutions } from "@/content/solutions";
 import { products } from "@/content/products";
 import { Container } from "@/components/ui/primitives";
@@ -31,9 +31,6 @@ export function Footer() {
                   <Link href={`/productos/${product.slug}`}>{product.name}</Link>
                 </li>
               ))}
-              <li>
-                <Link href="/#cafetal">Caso Cafetal</Link>
-              </li>
             </ul>
           </nav>
 
@@ -61,9 +58,13 @@ export function Footer() {
               Contacto
             </h2>
             <ul className={styles.footerList}>
-              <li>
-                <Link href={site.bookingUrl}>Agendar conversación</Link>
-              </li>
+              {isExternalHref(site.bookingUrl) ? (
+                <li>
+                  <a href={site.bookingUrl} target="_blank" rel="noopener noreferrer">
+                    Agendar conversación
+                  </a>
+                </li>
+              ) : null}
               <li>
                 <a href={site.whatsappUrl} target="_blank" rel="noopener noreferrer">
                   WhatsApp
