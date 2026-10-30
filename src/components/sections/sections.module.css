@@ -455,11 +455,12 @@
 
 .productLogo a {
   display: inline-flex;
-  height: 4.25rem;
+  width: min(100%, 17rem);
+  height: 3.5rem;
 }
 
 .productLogo img {
-  width: auto;
+  width: 100%;
   height: 100%;
   max-width: 100%;
   object-fit: contain;
