@@ -269,3 +269,26 @@
     padding-top: 0;
   }
 }
+
+/* ---------- Centered: the label sits exactly under the icon, on its vertical axis ---------- */
+@media (min-width: 64rem) {
+  .center:not(.rail) .step {
+    justify-items: center;
+    padding-right: 0;
+    text-align: center;
+  }
+
+  .center:not(.rail) .body {
+    justify-items: center;
+  }
+
+  /* The line runs from the right edge of this node to the left edge of the next one (nodes are centered now). */
+  .center:not(.rail) .step:not(:last-child)::before {
+    left: calc(50% + var(--node) / 2 + 0.5rem);
+    width: calc(100% + var(--gap) - var(--node) - 1rem);
+  }
+
+  .center:not(.rail) .step:not(:last-child)::after {
+    left: calc(150% + var(--gap) - var(--node) / 2 - 0.5rem - 9px);
+  }
+}

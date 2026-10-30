@@ -466,3 +466,52 @@
 .contactCard a {
   overflow-wrap: anywhere;
 }
+
+/* /contacto: the left panel carries real weight and follows the form while it scrolls. */
+.contactCard {
+  gap: var(--space-5);
+  padding: clamp(1.75rem, 3.6vw, 2.75rem);
+}
+
+.contactCard h2 {
+  font-size: clamp(2rem, 3.6vw, 2.8rem);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
+}
+
+.contactCard p {
+  font-size: var(--text-lg);
+}
+
+.contactPoints {
+  display: grid;
+  gap: 0.7rem;
+  margin: 0;
+  padding: var(--space-4) 0;
+  list-style: none;
+  border-block: 1px solid rgb(255 255 255 / 0.14);
+}
+
+.contactPoints li {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-weight: 600;
+  color: #fff;
+}
+
+.contactPoints svg {
+  flex: none;
+  color: var(--ms-brass);
+}
+
+@media (min-width: 62rem) {
+  .contactPanel {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  }
+
+  .contactSticky {
+    position: sticky;
+    top: 7rem;
+  }
+}

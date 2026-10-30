@@ -706,3 +706,27 @@ section.ctaSection {
     radial-gradient(22rem 12rem at 100% 0%, color-mix(in srgb, var(--product) 30%, transparent), transparent 70%),
     linear-gradient(160deg, var(--product-deep), var(--product-deep-2));
 }
+
+/* Back link at the start of a product page: subtle, top left. */
+.backTop {
+  margin: 0 0 var(--space-5);
+}
+
+.backTop a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--text-sm);
+  font-weight: 800;
+  color: var(--ms-ink-soft);
+  text-underline-offset: 4px;
+}
+
+.backTop a:hover {
+  color: var(--ms-navy);
+}
+
+/* /productos: both actions stay on one row, whatever the product's name. */
+.rowActions a {
+  white-space: nowrap;
+}

@@ -19,6 +19,7 @@ export function Flow({
   tone = "light",
   variant = "row",
   numbered = false,
+  align = "start",
   label,
   className,
 }: {
@@ -27,6 +28,8 @@ export function Flow({
   tone?: "light" | "dark";
   variant?: "row" | "rail" | "compact";
   numbered?: boolean;
+  /** `center`: labels sit on the icon's vertical axis (desktop rows with titles only). */
+  align?: "start" | "center";
   label?: string;
   className?: string;
 }) {
@@ -41,6 +44,7 @@ export function Flow({
         variant === "rail" && styles.rail,
         variant === "compact" && styles.compact,
         tone === "dark" && styles.dark,
+        align === "center" && styles.center,
         className,
       )}
     >

@@ -40,32 +40,21 @@ export function ProductsSection() {
         <Reveal as="ul" stagger className={styles.productGrid}>
           {products.map((product) => (
             <li key={product.slug} className={styles.productCard} data-product={product.tone}>
-              <Link
-                className={styles.productLogoLink}
-                href={`/productos/${product.slug}`}
-                aria-label={`Ver la página de ${product.name}`}
-              >
-                <Image
-                  src={product.logo.src}
-                  alt={`Logo de ${product.name}`}
-                  width={product.logo.width}
-                  height={product.logo.height}
-                  sizes="(max-width: 52rem) 70vw, 300px"
-                />
-              </Link>
-              <div className={styles.productBody}>
-                <small className={styles.productCategory}>{product.category}</small>
-                <h3>{product.name}</h3>
-                <p>{product.text}</p>
-                <strong className={styles.productImpact}>
-                  <Icon name="sparkles" size={16} /> {product.impact}
-                </strong>
-                <ul className={styles.tags}>
-                  {product.tags.map((tag) => (
-                    <li key={tag}>{tag}</li>
-                  ))}
-                </ul>
-              </div>
+              <small className={styles.productCategory}>{product.category}</small>
+              {/* The logo already says the name: it is the card's heading (its alt text is the heading's name). */}
+              <h3 className={styles.productLogo}>
+                <Link href={`/productos/${product.slug}`}>
+                  <Image
+                    src={product.logo.src}
+                    alt={product.name}
+                    width={product.logo.width}
+                    height={product.logo.height}
+                    sizes="(max-width: 52rem) 70vw, 280px"
+                  />
+                </Link>
+              </h3>
+              <p className={styles.productText}>{product.text}</p>
+              <p className={styles.productImpact}>{product.impact}</p>
               <div className={styles.productActions}>
                 <LinkButton href={`/productos/${product.slug}`} icon="arrowRight">
                   {product.ctaLabel}
@@ -109,7 +98,7 @@ export function PrincipleSection() {
       <Container>
         <SectionHeading id="principio-title" eyebrow={principle.eyebrow} title={principle.title} onDark />
         <Reveal>
-          <Flow steps={principle.steps} cols={8} tone="dark" numbered label="Nuestro principio, paso a paso" />
+          <Flow steps={principle.steps} cols={8} tone="dark" numbered align="center" label="Nuestro principio, paso a paso" />
         </Reveal>
         <Reveal className={styles.principleNote} delay={100}>
           <p>{principle.note}</p>
@@ -151,46 +140,54 @@ export function AiLayersSection() {
   );
 }
 
-/** Problems: four nodes that converge into one connected operation (same visual language as the principle). */
+/**
+ * Problems: one connected system. The four frictions are equal rows inside ONE container that ends in the outcome;
+ * the intro (title, text, call to action) stays in view (sticky) while the rows scroll by.
+ */
 export function ProblemsSection() {
   return (
     <Section id="problemas" tone="paper" labelledBy="problemas-title">
       <Container>
-        <SectionHeading
-          id="problemas-title"
-          eyebrow={problemsSection.eyebrow}
-          title={problemsSection.title}
-          text={problemsSection.text}
-        />
-        <Reveal as="ul" stagger className={styles.problemList}>
-          {problems.map((problem) => (
-            <li key={problem.title} className={styles.problem}>
-              <span className={styles.node}>
-                <Icon name={problem.icon} size={22} />
+        <div className={styles.methodLayout}>
+          <Reveal className={styles.methodIntro}>
+            <span className={styles.aiEyebrow}>{problemsSection.eyebrow}</span>
+            <h2 id="problemas-title">{problemsSection.title}</h2>
+            <p>{problemsSection.text}</p>
+            <div className={styles.quietCta}>
+              <p>
+                <small>{problemsSection.cta.kicker}</small>
+                <strong>{problemsSection.cta.title}</strong>
+              </p>
+              <LinkButton href="/#contacto" variant="secondary" icon="arrowRight">
+                {problemsSection.cta.label}
+              </LinkButton>
+            </div>
+          </Reveal>
+          <Reveal className={styles.problemSystem} delay={80}>
+            <ul className={styles.problemRows}>
+              {problems.map((problem) => (
+                <li key={problem.title} className={styles.problemRow}>
+                  <span className={styles.node}>
+                    <Icon name={problem.icon} size={22} />
+                  </span>
+                  <div>
+                    <h3>{problem.title}</h3>
+                    <p>{problem.text}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+            <div className={styles.converge}>
+              <span className={styles.convergeIcon}>
+                <Icon name="link" size={22} />
               </span>
-              <h3>{problem.title}</h3>
-              <p>{problem.text}</p>
-            </li>
-          ))}
-        </Reveal>
-        <Reveal className={styles.converge}>
-          <span className={styles.convergeIcon}>
-            <Icon name="link" size={22} />
-          </span>
-          <p>
-            <strong>{problemsSection.outcome.title}</strong>
-            <span>{problemsSection.outcome.text}</span>
-          </p>
-        </Reveal>
-        <Reveal className={styles.quietCta}>
-          <p>
-            <small>{problemsSection.cta.kicker}</small>
-            <strong>{problemsSection.cta.title}</strong>
-          </p>
-          <LinkButton href="/#contacto" variant="secondary" icon="arrowRight">
-            {problemsSection.cta.label}
-          </LinkButton>
-        </Reveal>
+              <p>
+                <strong>{problemsSection.outcome.title}</strong>
+                <span>{problemsSection.outcome.text}</span>
+              </p>
+            </div>
+          </Reveal>
+        </div>
       </Container>
     </Section>
   );

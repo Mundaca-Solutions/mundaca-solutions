@@ -77,7 +77,7 @@ const catalog: readonly Product[] = [
       text: "Plataforma de inteligencia ambiental para proyectos de construcción. Ordena materiales, evidencia, indicadores y trazabilidad para comprender el desempeño del proyecto.",
       forWho: "equipos de construcción, sostenibilidad, diseño y gestión de proyectos.",
       visitLabel: "Visitar Carbono Zero",
-      hubLabel: "Conocer Carbono Zero dentro del portfolio",
+      hubLabel: "Conocer Carbono Zero",
     },
     proof: "Inteligencia ambiental para proyectos de construcción y trazabilidad.",
     flow: {
@@ -149,7 +149,7 @@ const catalog: readonly Product[] = [
       text: "Software de gestión operacional para negocios que venden. Conecta ventas, caja, inventario, pedidos y datos para que el equipo trabaje con una fuente de verdad común.",
       forWho: "restaurantes, cafeterías, minimarkets y negocios con operación de venta.",
       visitLabel: "Visitar Foodies",
-      hubLabel: "Conocer Foodies dentro del portfolio",
+      hubLabel: "Conocer Foodies",
     },
     proof: "Inteligencia para ventas, caja, inventario y operación comercial.",
     flow: {

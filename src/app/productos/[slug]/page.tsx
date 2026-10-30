@@ -62,6 +62,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
       <Section tone="white" labelledBy="producto-flujo" className={styles.pageSection}>
         <Container>
+          <p className={styles.backTop}>
+            <Link href="/productos">
+              <Icon name="arrowLeft" size={16} /> Volver a productos
+            </Link>
+          </p>
+
           <Reveal className={styles.identity}>
             <div className={styles.logoStage}>
               <Image
@@ -131,11 +137,6 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               label={closing.cta.label}
               icon="external"
             />
-            <p className={styles.backRow}>
-              <Link href="/productos">
-                <Icon name="arrowLeft" size={16} /> Volver a productos
-              </Link>
-            </p>
           </Container>
         </Section>
       ) : null}

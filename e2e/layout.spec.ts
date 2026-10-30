@@ -40,11 +40,38 @@ test.describe("home grids are paired and equal-height", () => {
     await expect(page.locator("#principio ol > li svg")).toHaveCount(8);
   });
 
-  test("problemas: four cards in one row on desktop, stacked on phones, equal heights", async ({ page }, info) => {
-    const cards = await boxes(page, "#problemas > div > ul > li");
-    expect(cards).toHaveLength(4);
-    expect(rowSizes(cards)).toEqual(isDesktop(info) ? [4] : [1, 1, 1, 1]);
-    expectEqualHeightsPerRow(cards);
+  test("problemas: four equal rows inside one container (no loose cards)", async ({ page }) => {
+    const rows = await boxes(page, "#problemas ul > li");
+    expect(rows).toHaveLength(4);
+    expect(rowSizes(rows)).toEqual([1, 1, 1, 1]);
+    const heights = rows.map((row) => row.height);
+    expect(Math.max(...heights) - Math.min(...heights), "rows share one height").toBeLessThanOrEqual(1);
+    const widths = rows.map((row) => row.width);
+    expect(Math.max(...widths) - Math.min(...widths)).toBeLessThanOrEqual(1);
+  });
+
+  test("split sections keep their intro in view while the rest scrolls (sticky)", async ({ page }, info) => {
+    test.skip(!isDesktop(info), "sticky intros are a desktop layout");
+    for (const id of ["problemas", "metodo", "contacto"]) {
+      const section = page.locator("#" + id);
+      const top = await section.evaluate((node) => node.getBoundingClientRect().top + window.scrollY);
+      await page.evaluate((y) => window.scrollTo(0, y), top + 170);
+      const intro = page.locator("#" + id + " h2").first().locator("..");
+      await expect.poll(async () => (await intro.boundingBox())?.y ?? -999, { message: id }).toBeGreaterThan(0);
+      expect((await intro.boundingBox())!.y, id).toBeLessThan(200);
+    }
+  });
+
+  test("principio: every label is centered under its icon", async ({ page }, info) => {
+    test.skip(!isDesktop(info), "centered captions are a desktop row");
+    const offsets = await page.locator("#principio ol > li").evaluateAll((steps) =>
+      steps.map((step) => {
+        const node = step.querySelector("span")!.getBoundingClientRect();
+        const label = step.querySelector("strong")!.getBoundingClientRect();
+        return Math.abs(node.left + node.width / 2 - (label.left + label.width / 2));
+      }),
+    );
+    for (const offset of offsets) expect(offset).toBeLessThanOrEqual(1);
   });
 
   test("soluciones: 2 + 2 on desktop, equal heights", async ({ page }, info) => {

@@ -106,3 +106,11 @@ de referencia vive en `docs/madeby/`.
 - Lenguaje común: nodos con ícono unidos por líneas y flechas (`components/ui/Flow.tsx`), hairlines en vez de tarjetas apiladas.
 - Cada producto conserva su identidad (`data-product` en `brand.css`: Foodies naranja/grafito, Carbono Zero verde); no usa el latón corporativo.
 - El caso Cafetal se retiró del sitio (contrato no cerrado). Resultados solo muestra clientes autorizados por el dueño.
+
+## Segunda refinación
+
+- Productos propios: descriptor, logo (es el heading), texto breve y una frase síntesis protagonista; una sola acción por card; filas alineadas entre cards (subgrid).
+- Nuestro principio: labels centrados sobre el eje de cada ícono (`Flow align="center"`).
+- Cuando la operación crece: un solo contenedor con cuatro filas iguales y cierre "operación conectada"; intro sticky.
+- Sticky: problemas, método, contacto (home) y panel izquierdo de /contacto, siempre dentro de su sección y solo desde 62rem.
+- /productos: CTAs cortos ("Conocer X" / "Visitar X") en una sola fila; "Volver a productos" arriba en la ficha.
